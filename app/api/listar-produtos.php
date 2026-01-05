@@ -11,6 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 
 // ✅ Se quiser proteger igual ao cadastrar, descomente:
 // require_once __DIR__ . "/auth.php";
+// requireAuth();
 
 require_once __DIR__ . "/../config/Database.php";
 
@@ -33,23 +34,36 @@ try {
 // ===============================
 // Params (com defaults)
 // ===============================
-$main  = strtolower(trim($_GET["main"] ?? "suplementos"));
-$sub   = strtolower(trim($_GET["sub"] ?? "whey"));
-$days  = (int)($_GET["days"] ?? 5);
-$limit = (int)($_GET["limit"] ?? 5);
+$main = strtolower(trim($_GET["main"] ?? "suplementos"));
+$sub = strtolower(trim($_GET["sub"] ?? "whey"));
+$days = (int) ($_GET["days"] ?? 5);
+$limit = (int) ($_GET["limit"] ?? 5);
 
-if ($days < 1) $days = 1;
-if ($days > 30) $days = 30;
+// Segurança days
+if ($days < 1)
+    $days = 1;
+if ($days > 30)
+    $days = 30;
 
-if ($limit < 1) $limit = 1;
-if ($limit > 5) $limit = 5;
+// ✅ Segurança limit (ANTES era 5, por isso travava)
+// Ajuste o teto conforme seu uso. Coloquei 100 porque você citou "mostrar todos/100".
+$MAX_LIMIT = 100;
+if ($limit < 1)
+    $limit = 1;
+if ($limit > $MAX_LIMIT)
+    $limit = $MAX_LIMIT;
+
+// ✅ IMPORTANTE:
+// Se você não mudar isso, seu SQL continua limitado a 10 itens (5 + 5).
+// Aqui fazemos as subqueries buscarem "até $limit" itens cada,
+// e o LIMIT final retorna exatamente $limit.
+$innerLimit = $limit;
 
 $mainEsc = $db->conn->real_escape_string($main);
-$subEsc  = $db->conn->real_escape_string($sub);
+$subEsc = $db->conn->real_escape_string($sub);
 
 // ===============================
 // 1) Validação: categoria existe?
-// (se não existir, retorna 422)
 // ===============================
 $sqlCheck = "
 SELECT sub.id
@@ -70,12 +84,12 @@ if (!$check) {
 if ($check->num_rows === 0) {
     response(422, "Categoria não existe (main/sub inválidos).", [
         "main" => $main,
-        "sub"  => $sub
+        "sub" => $sub
     ]);
 }
 
 // ===============================
-// 2) SELECT principal (seu SQL)
+// 2) SELECT principal
 // ===============================
 $sql = "
 SELECT *
@@ -99,7 +113,7 @@ FROM (
      COALESCE(p.rating_avg, 0) DESC,
      COALESCE(p.discount_percent, 0) DESC,
      COALESCE(p.rating_count, 0) DESC
-   LIMIT 5)
+   LIMIT {$innerLimit})
 
   UNION ALL
 
@@ -122,7 +136,7 @@ FROM (
      COALESCE(p.rating_avg, 0) DESC,
      COALESCE(p.discount_percent, 0) DESC,
      COALESCE(p.rating_count, 0) DESC
-   LIMIT 5)
+   LIMIT {$innerLimit})
 ) t
 ORDER BY
   t.prioridade ASC,
@@ -135,7 +149,6 @@ $result = $db->conn->query($sql);
 if (!$result) {
     response(500, "Erro ao buscar produtos.", [
         "erro_mysql" => $db->conn->error
-        // se quiser depurar, você pode adicionar: "sql" => $sql
     ]);
 }
 
@@ -149,7 +162,8 @@ response(200, "Produtos listados com sucesso.", [
         "main" => $main,
         "sub" => $sub,
         "days" => $days,
-        "limit" => $limit
+        "limit" => $limit,
+        "max_limit" => $MAX_LIMIT
     ],
     "count" => count($items),
     "items" => $items

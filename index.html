@@ -43,7 +43,7 @@
 
     <nav class="navbar navbar-expand-lg bg-dark sticky-top border-bottom border-warning-subtle">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="#"><img src="/public/images/logovitrine.png" class="logomenu"
+            <a class="navbar-brand fw-bold" href="#/inicio"><img src="/public/images/logovitrine.png" class="logomenu"
                     alt="Logo Vitrine dos links"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
                 aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,11 +104,14 @@
                     </li> -->
 
                     <li class="nav-item">
-                        <a class="nav-link" href="glow.html" target="_blank"><i class="bi bi-star-fill"></i>  <img src="/public/images/Logo Horizontal Branco.png" class="logoglow" alt="Logo Glow Corps" sizes="" srcset=""></a>
+                        <a class="nav-link" href="glow.html" target="_blank"><i class="bi bi-star-fill"></i> <img
+                                src="/public/images/Logo Horizontal Branco.png" class="logoglow" alt="Logo Glow Corps"
+                                sizes="" srcset=""></a>
                     </li>
                     <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
-                        <a class="btn btn-warning btn-sm fw-bold" href="https://www.amazon.com.br/shop/caiojosef?ref=ac_inf_tb_vh"
-                            target="_blank"><i class="bi bi-cart-fill"></i> Ofertas Amazon</a>
+                        <a class="btn btn-warning btn-sm fw-bold"
+                            href="https://www.amazon.com.br/shop/caiojosef?ref=ac_inf_tb_vh" target="_blank"><i
+                                class="bi bi-cart-fill"></i> Ofertas Amazon</a>
                     <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
                         <a class="btn btn-warning btn-sm fw-bold" href="https://mercadolivre.com/sec/16oBFtK"
                             target="_blank"><i class="bi bi-cart-fill"></i> Ofertas Mercado Livre</a>
@@ -117,6 +120,8 @@
             </div>
         </div>
     </nav>
+    <menu data-name="Tela Inicial" href="#/inicio" icon-img="/public/images/icons/house-door-fill.svg"></menu>
+    <menu data-name="Suplementos" href="#/suplementos" icon-img="/public/images/icons/capsule-pill.svg"></menu>
 
     <!-- <header class="hero text-center">
         <div class="container">
@@ -206,11 +211,14 @@
 
     <main class="container my-4">
 
+
         <!-- CATEGORIAS (UI) -->
-        
+
         <!-- AQUI VAI ENTRAR O CONTEÚDO DO SPA DEPOIS -->
         <section id="spa-view">
-            <section data-main="suplementos" data-sub="whey">
+            <section data-type="mais-vendidos" data-limit="10"></section>
+            <hr class="gc-divider" />
+            <section data-main="suplementos" data-sub="whey" data-limit="5">
             </section>
             <hr class="gc-divider" />
             <section data-main="suplementos" data-sub="creatina">
@@ -233,7 +241,9 @@
             </div>
         </div>
     </footer>
-
+    <script src="public/components/menu/menu.js"></script>
+    <script src="/public/components/card/card.js"></script>
+    <script src="/public/pages/rendersection/scripts.js"></script>
     <script src="spa.js"></script>
     <script src="/public/assets/js/scripts.js"></script>
 

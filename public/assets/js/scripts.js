@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
       imgDesktop: "../../public/images/glow.jpg",
       imgMobile: "../../public/images/glow-mobile.jpg",
       alt: "Glow - Anunciante",
-      href: "/public/glow.html",
+      href: "glow.html",
       duration: 3000,
       badge: "Patrocinado",
     },
