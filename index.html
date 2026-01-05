@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AllPromo - Ofertas para Academia</title>
+    <title>Vitrine dos Links</title>
 
-    <link rel="icon" href="images/coroa.png" type="image/x-icon">
+    <link rel="icon" href="public/images/favicon.png" type="image/x-icon">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -36,161 +36,33 @@
     </script>
     <noscript><img height="1" width="1" style="display:none"
             src="https://www.facebook.com/tr?id=693118566915093&ev=PageView&noscript=1" /></noscript>
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #1a1a1a;
-        }
-
-        .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1571902943202-507ec2618e8f?q=80&w=1975&auto=format&fit=crop') no-repeat center center;
-            background-size: cover;
-            color: white;
-            padding: 5rem 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .hero h1 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(3.5rem, 10vw, 7rem);
-            letter-spacing: 3px;
-            text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.5);
-            line-height: 1;
-        }
-
-        .section-title {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 2.8rem;
-            letter-spacing: 1px;
-            color: #dee2e6;
-            position: relative;
-            padding-bottom: 10px;
-            margin-bottom: 2.5rem !important;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background-color: #ffc107;
-            border-radius: 2px;
-        }
-
-        .card {
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .card-link {
-            text-decoration: none;
-            color: inherit;
-            display: block;
-            border: none;
-        }
-
-        .card-link:hover .card-img-top {
-            transform: scale(1.05);
-        }
-
-        .card-img-top {
-            width: 100%;
-            height: 180px;
-            object-fit: contain;
-            transition: transform 0.4s ease;
-            background-color: #ffffff;
-            padding: 0.5rem;
-        }
-
-        .card-title {
-            font-weight: bold;
-            transition: transform 0.3s ease;
-        }
-
-        .card-text-hover {
-            font-size: 0.8rem;
-            color: #adb5bd;
-            font-weight: bold;
-            text-transform: uppercase;
-            opacity: 1;
-            transform: translateY(0);
-            transition: color 0.3s ease;
-        }
-
-        .card-link:hover .card-text-hover {
-            color: #ffc107;
-        }
-
-        .footer {
-            background-color: #212529;
-            color: white;
-            padding: 3rem 0;
-            margin-top: 5rem;
-        }
-
-        .social-icons a {
-            color: #adb5bd;
-            font-size: 1.5rem;
-            margin: 0 10px;
-            transition: color 0.3s ease, transform 0.3s ease;
-        }
-
-        .social-icons a:hover {
-            color: #ffc107;
-            transform: scale(1.2);
-        }
-
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        @media (max-width: 991px) {
-            .card-img-top {
-                height: 160px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .card-img-top {
-                height: 140px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/public/assets/css/style.css">
 </head>
 
 <body>
 
     <nav class="navbar navbar-expand-lg bg-dark sticky-top border-bottom border-warning-subtle">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="https://mercadolivre.com/sec/16oBFtK">ALLPROMO</a>
+            <a class="navbar-brand fw-bold" href="#"><img src="/public/images/logovitrine.png" class="logomenu"
+                    alt="Logo Vitrine dos links"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
                 aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav ms-auto align-items-center">
-
-                    <li class="nav-item dropdown">
+                    <!-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            <i class="bi bi-capsule-pill"></i> Suplementos
+                            <i class="bi bi-capsule"></i> Suplementos
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="https://mercadolivre.com/sec/11ygYbg"
+                            <li><a class="dropdown-item" href="https://mercadolivre.com/sec/238GLu5"
                                     target="_blank">Whey</a></li>
-                            <li><a class="dropdown-item" href="https://mercadolivre.com/sec/1PZhNM1"
+                            <li><a class="dropdown-item" href="https://mercadolivre.com/sec/1yLLygA"
                                     target="_blank">Creatina</a></li>
-                            <li><a class="dropdown-item" href="https://mercadolivre.com/sec/33YHkJ2" target="_blank">Pré
+                            <li><a class="dropdown-item" href="https://mercadolivre.com/sec/1cv1n4Y" target="_blank">Pré
                                     Treino</a></li>
                         </ul>
                     </li>
@@ -201,12 +73,16 @@
                             <i class="bi bi-gender-female"></i> Feminino
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="https://mercadolivre.com/sec/34cBuyy"
-                                    target="_blank">Legging</a></li>
-                            <li><a class="dropdown-item" href="https://mercadolivre.com/sec/2sYNpXj"
-                                    target="_blank">Shorts</a></li>
-                            <li><a class="dropdown-item" href="https://mercadolivre.com/sec/2ekLkEz"
-                                    target="_blank">Conjuntos</a></li>
+                            <li><a class="dropdown-item"
+                                    href="https://www.amazon.com.br/shop/caiojosef/list/5XDXFSVHI2PY?ref_=aipsflist"
+                                    target="_blank">Shorts <i class="bi bi-amazon"></i></a></li>
+                            <li><a class="dropdown-item"
+                                    href="https://www.amazon.com.br/shop/caiojosef/list/2CXR7APQMQ9PX?ref_=aipsflist"
+                                    target="_blank">Blusinhas <i class="bi bi-amazon"></i></a></li>
+                            <li><a class="dropdown-item"
+                                    href="https://www.amazon.com.br/shop/caiojosef/list/14K4RPX1KJ6C7?ref_=aipsflist"
+                                    target="_blank">Legging <i class="bi bi-amazon"></i>
+                                </a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -215,192 +91,152 @@
                             <i class="bi bi-gender-male"></i> Masculino
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="https://mercadolivre.com/sec/1X7Edbn"
-                                    target="_blank">Conjuntos</a></li>
-                            <li><a class="dropdown-item" href="https://mercadolivre.com/sec/1X4sxdA"
-                                    target="_blank">Regatas</a></li>
-                            <li><a class="dropdown-item" href="https://mercadolivre.com/sec/1ykKoDQ"
-                                    target="_blank">Dryfit</a></li>
-                            <li><a class="dropdown-item" href="https://mercadolivre.com/sec/1b6DEPA"
-                                    target="_blank">Oversized</a></li>
+                            <li><a class="dropdown-item"
+                                    href="https://www.amazon.com.br/shop/caiojosef/list/2L2G9KLEFPI29?ref_=cm_sw_r_cp_ud_aip_sf_list_spv_ons_mixed_d_K3FRAA5C45VYXP7HM18B"
+                                    target="_blank">Conjuntos <i class="bi bi-amazon"></i></a></li>
+                            <li><a class="dropdown-item"
+                                    href="https://www.amazon.com.br/shop/caiojosef/list/R0IS110MS657?ref_=cm_sw_r_cp_ud_aip_sf_list_spv_ons_mixed_d_WF89MEEMT2M99NRDSKK2"
+                                    target="_blank">Shorts <i class="bi bi-amazon"></i></a></li>
+                            <li><a class="dropdown-item"
+                                    href="https://www.amazon.com.br/shop/caiojosef/list/905RLRDTAIJD?ref_=cm_sw_r_cp_ud_aip_sf_list_spv_ons_mixed_d_ZVYBHN8MZNHZVY78VXA8"
+                                    target="_blank">Camisas <i class="bi bi-amazon"></i></a></li>
                         </ul>
-                    </li>
+                    </li> -->
+
                     <li class="nav-item">
-                        <a class="nav-link" href="#" target="_blank"><i class="bi bi-star-fill"></i> Acessórios</a>
+                        <a class="nav-link" href="glow.html" target="_blank"><i class="bi bi-star-fill"></i>  <img src="/public/images/Logo Horizontal Branco.png" class="logoglow" alt="Logo Glow Corps" sizes="" srcset=""></a>
                     </li>
                     <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
-                        <a class="btn btn-warning btn-sm fw-bold"
-                            href="https://mercadolivre.com/sec/16oBFtK"
-                            target="_blank"><i class="bi bi-cart-fill"></i> Todas as Ofertas</a>
+                        <a class="btn btn-warning btn-sm fw-bold" href="https://www.amazon.com.br/shop/caiojosef?ref=ac_inf_tb_vh"
+                            target="_blank"><i class="bi bi-cart-fill"></i> Ofertas Amazon</a>
+                    <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                        <a class="btn btn-warning btn-sm fw-bold" href="https://mercadolivre.com/sec/16oBFtK"
+                            target="_blank"><i class="bi bi-cart-fill"></i> Ofertas Mercado Livre</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <header class="hero text-center">
+    <!-- <header class="hero text-center">
         <div class="container">
-            <h1>ALLPROMO</h1>
+             <h1><img src="/public/public/images/logo-beco1.png" class="logohero" alt="Logo Beco do gamer"></h1>
             <p class="lead">Equipe-se para o seu melhor treino. Encontre aqui as melhores ofertas em roupas e acessórios
                 fitness.</p>
         </div>
-    </header>
+    </header> -->
+    <section class="hero-textual hero-fixed" aria-label="Destaque e Anunciantes">
+        <div class="container">
+            <div id="heroRotator" class="carousel slide hero-carousel" data-bs-ride="false" data-bs-touch="true">
 
-    <main class="container">
+                <div class="carousel-inner" id="heroRotatorInner">
 
-        <h2 class="section-title text-center my-5 fade-in">SUPLEMENTOS</h2>
-        <div class="row">
-            <div class="col-lg-4 col-md-6 mb-4 fade-in">
-                <a href="https://mercadolivre.com/sec/11ygYbg" target="_blank" class="card-link">
-                    <div class="card h-100 shadow-sm">
-                        <img src="images/whey.png" class="card-img-top" alt="Whey Protein">
-                        <div class="card-body text-center d-flex align-items-center justify-content-center">
-                            <div>
-                                <h5 class="card-title mb-1">WHEY</h5>
-                                <p class="card-text-hover">clique para conferir</p>
+                    <!-- SLIDE 0: HERO PADRÃO (TEXTO) -->
+                    <div class="carousel-item active" data-hero="true">
+                        <div class="hero-frame">
+                            <div class="hero-content">
+                                <span class="hero-tag">🔥 Ofertas selecionadas</span>
+
+                                <h1 class="hero-heading">
+                                    Tecnologia, fitness e estilo<br>
+                                    com <span>os melhores preços</span>
+                                </h1>
+
+                                <p class="hero-description">
+                                    Produtos confiáveis, links verificados e promoções reais.
+                                    Economize tempo e dinheiro comprando certo.
+                                </p>
                             </div>
                         </div>
                     </div>
-                </a>
-            </div>
-            <div class="col-lg-4 col-md-6 mb-4 fade-in">
-                <a href="https://mercadolivre.com/sec/1PZhNM1" target="_blank" class="card-link">
-                    <div class="card h-100 shadow-sm">
-                        <img src="images/creatina.png" class="card-img-top" alt="Creatina">
-                        <div class="card-body text-center d-flex align-items-center justify-content-center">
-                            <div>
-                                <h5 class="card-title mb-1">CREATINA</h5>
-                                <p class="card-text-hover">clique para conferir</p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-4 col-md-6 mb-4 fade-in">
-                <a href="https://mercadolivre.com/sec/33YHkJ2" target="_blank" class="card-link">
-                    <div class="card h-100 shadow-sm">
-                        <img src="images/pre-treino.png" class="card-img-top" alt="Pré Treino">
-                        <div class="card-body text-center d-flex align-items-center justify-content-center">
-                            <div>
-                                <h5 class="card-title mb-1">PRÉ TREINO</h5>
-                                <p class="card-text-hover">clique para conferir</p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
+
+                    <!-- SLIDES DE ANUNCIANTES (injetados via scripts.js) -->
+                </div>
+
+                <!-- CONTROLES -->
+                <button class="carousel-control-prev hero-control" type="button" data-bs-target="#heroRotator"
+                    data-bs-slide="prev" aria-label="Anterior">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                </button>
+
+                <button class="carousel-control-next hero-control" type="button" data-bs-target="#heroRotator"
+                    data-bs-slide="next" aria-label="Próximo">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                </button>
+
+                <!-- INDICADORES -->
+                <div class="carousel-indicators hero-indicators" id="heroRotatorIndicators"></div>
             </div>
         </div>
+    </section>
 
-        <h2 class="section-title text-center my-5 fade-in">VESTUÁRIO FEMININO</h2>
-        <div class="row">
-            <div class="col-lg-4 col-md-6 mb-4 fade-in">
-                <a href="https://mercadolivre.com/sec/34cBuyy" target="_blank" class="card-link">
-                    <div class="card h-100 shadow-sm">
-                        <img src="images/legging.png" class="card-img-top" alt="Legging Feminina">
-                        <div class="card-body text-center d-flex align-items-center justify-content-center">
-                            <div>
-                                <h5 class="card-title mb-1">LEGGING FEMININA</h5>
-                                <p class="card-text-hover">clique para conferir</p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
+
+    <!-- <section class="ads-carousel py-4">
+        <div class="container">
+            <div class="ads-carousel__header mb-3">
+                <span class="ads-carousel__tag">Parceiros</span>
+                <h2 class="ads-carousel__title mb-0">Anunciantes</h2>
             </div>
-            <div class="col-lg-4 col-md-6 mb-4 fade-in">
-                <a href="https://mercadolivre.com/sec/2sYNpXj" target="_blank" class="card-link">
-                    <div class="card h-100 shadow-sm">
-                        <img src="images/shorts-feminino.png" class="card-img-top" alt="Shorts Femininos">
-                        <div class="card-body text-center d-flex align-items-center justify-content-center">
-                            <div>
-                                <h5 class="card-title mb-1">SHORTS FEMININOS</h5>
-                                <p class="card-text-hover">clique para conferir</p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-4 col-md-6 mb-4 fade-in">
-                <a href="https://mercadolivre.com/sec/2ekLkEz" target="_blank" class="card-link">
-                    <div class="card h-100 shadow-sm">
-                        <img src="images/conjunto-feminino.png" class="card-img-top" alt="Conjunto Feminino">
-                        <div class="card-body text-center d-flex align-items-center justify-content-center">
-                            <div>
-                                <h5 class="card-title mb-1">CONJUNTO ACAD. FEMININO</h5>
-                                <p class="card-text-hover">clique para conferir</p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
+
+            <div id="adsCarousel" class="carousel slide" data-bs-touch="true" data-bs-ride="false">
+                <div class="carousel-inner" id="adsCarouselInner">
+                 Slides serão inseridos via scripts.js 
+                </div>
+
+                
+                <button class="carousel-control-prev" type="button" data-bs-target="#adsCarousel" data-bs-slide="prev"
+                    aria-label="Anterior">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                </button>
+
+                <button class="carousel-control-next" type="button" data-bs-target="#adsCarousel" data-bs-slide="next"
+                    aria-label="Próximo">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                </button>
+
+                 Indicadores (bolinhas) 
+                <div class="carousel-indicators" id="adsCarouselIndicators">
+                     Indicadores serão inseridos via scripts.js 
+                </div>
             </div>
         </div>
+    </section> -->
 
-        <h2 class="section-title text-center my-5 fade-in">VESTUÁRIO MASCULINO</h2>
-        <div class="row">
-            <div class="col-lg-3 col-md-6 mb-4 fade-in">
-                <a href="https://mercadolivre.com/sec/1X7Edbn" target="_blank" class="card-link">
-                    <div class="card h-100 shadow-sm">
-                        <img src="images/conjunto-masculino.png" class="card-img-top" alt="Conjunto Masculino">
-                        <div class="card-body text-center d-flex align-items-center justify-content-center">
-                            <div>
-                                <h5 class="card-title mb-1">CONJUNTO MASCULINO</h5>
-                                <p class="card-text-hover">clique para conferir</p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-4 fade-in">
-                <a href="https://mercadolivre.com/sec/1b6DEPA" target="_blank" class="card-link">
-                    <div class="card h-100 shadow-sm">
-                        <img src="images/oversized-masculina.png" class="card-img-top" alt="Camisa Oversized">
-                        <div class="card-body text-center d-flex align-items-center justify-content-center">
-                            <div>
-                                <h5 class="card-title mb-1">OVERSIZED MASCULINA</h5>
-                                <p class="card-text-hover">clique para conferir</p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-4 fade-in">
-                <a href="https://mercadolivre.com/sec/1X4sxdA" target="_blank" class="card-link">
-                    <div class="card h-100 shadow-sm">
-                        <img src="images/regata-masc.png" class="card-img-top" alt="Regatas Masculinas">
-                        <div class="card-body text-center d-flex align-items-center justify-content-center">
-                            <div>
-                                <h5 class="card-title mb-1">REGATAS MASCULINAS</h5>
-                                <p class="card-text-hover">clique para conferir</p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-4 fade-in">
-                <a href="https://mercadolivre.com/sec/1ykKoDQ" target="_blank" class="card-link">
-                    <div class="card h-100 shadow-sm">
-                        <img src="images/dryfit-masc.png" class="card-img-top" alt="Camisa Dryfit">
-                        <div class="card-body text-center d-flex align-items-center justify-content-center">
-                            <div>
-                                <h5 class="card-title mb-1">DRYFIT MASCULINA</h5>
-                                <p class="card-text-hover">clique para conferir</p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
+
+
+    <main class="container my-4">
+
+        <!-- CATEGORIAS (UI) -->
+        
+        <!-- AQUI VAI ENTRAR O CONTEÚDO DO SPA DEPOIS -->
+        <section id="spa-view">
+            <section data-main="suplementos" data-sub="whey">
+            </section>
+            <hr class="gc-divider" />
+            <section data-main="suplementos" data-sub="creatina">
+            </section>
+            <hr class="gc-divider" />
+            <section data-main="suplementos" data-sub="pre-treino" data-label="Pré-treino">
+            </section>
+            <hr class="gc-divider" />
+        </section>
 
     </main>
 
+
     <footer class="footer text-center">
         <div class="container">
-            <p class="mb-4">ALLPROMO &copy; 2025 - Todos os direitos reservados.</p>
+            <p class="mb-4">Vitrine dos Links &copy; 2026 - Todos os direitos reservados.</p>
             <div class="social-icons">
                 <a href="https://www.instagram.com/cibansincero/" target="_blank" aria-label="Instagram"><i
                         class="bi bi-instagram"></i></a>
             </div>
         </div>
     </footer>
+
+    <script src="spa.js"></script>
+    <script src="/public/assets/js/scripts.js"></script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
