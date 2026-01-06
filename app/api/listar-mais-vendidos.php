@@ -1,6 +1,23 @@
 <?php
+// listar-mais-vendidos.php
+
 header("Content-Type: application/json; charset=utf-8");
-header("Access-Control-Allow-Origin: *");
+
+// ===============================
+// CORS (RESTRITO) — ajuste conforme necessário
+// ===============================
+$allowedOrigins = [
+    "https://vitrinedoslinks.com.br",
+    "https://www.vitrinedoslinks.com.br",
+    "http://127.0.0.1:5501"
+];
+
+$origin = $_SERVER["HTTP_ORIGIN"] ?? "";
+if ($origin && in_array($origin, $allowedOrigins, true)) {
+    header("Access-Control-Allow-Origin: " . $origin);
+    header("Vary: Origin");
+}
+
 header("Access-Control-Allow-Methods: GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
@@ -9,14 +26,13 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
     exit;
 }
 
-// Se quiser proteger (POST/PUT/DELETE) e manter GET público, deixe como está.
 // Se quiser proteger esse GET também, descomente:
 // require_once __DIR__ . "/auth.php";
 // requireAuth();
 
 require_once __DIR__ . "/../config/Database.php";
 
-function response($status, $msg, $extra = [])
+function response(int $status, string $msg, array $extra = []): void
 {
     http_response_code($status);
     echo json_encode(array_merge([
@@ -27,51 +43,68 @@ function response($status, $msg, $extra = [])
 }
 
 // ===============================
-// LIMIT dinâmico via querystring
+// LIMIT via querystring
 // Ex: /listar-mais-vendidos.php?limit=12
 // ===============================
 $limit = isset($_GET["limit"]) ? (int) $_GET["limit"] : 5;
-
-// Regras de segurança (ajuste como quiser)
 if ($limit < 1)
     $limit = 1;
 if ($limit > 50)
     $limit = 50;
 
+// Cache curto para home (ajuste se quiser)
+header("Cache-Control: public, max-age=60");
+
 try {
     $db = new Database();
 } catch (Exception $e) {
-    response(500, "Erro na conexão com o banco.", ["erro" => $e->getMessage()]);
+    error_log("DB connect error (listar-mais-vendidos): " . $e->getMessage());
+    response(500, "Erro interno.");
 }
 
 // ===============================
-// SELECT (mesmo conteúdo, só com LIMIT parametrizado)
+// SELECT (colunas explícitas, sem p.*)
 // ===============================
 $sql = "
 SELECT
-  p.*,
-  c.slug AS category_slug,
-  c.name AS category_name,
-  c.url  AS category_url,
+  p.affiliate_url,
+  p.product_url,
+  p.title,
+  p.source_image_url,
+  p.local_image_path,
+  p.shipping_label,
+  p.rating_avg,
+  p.rating_count,
+  p.price_original,
+  p.discount_percent,
+  p.price_current,
+  p.installments_max,
+  p.installment_value,
+  p.marketplace,
+  p.badge_top_seller,
+  p.badge_mercado_lider,
+  p.badge_oficial,
   (COALESCE(p.rating_avg, 0) * LOG10(1 + COALESCE(p.rating_count, 0))) AS best_seller_score
 FROM products p
-JOIN categories c ON c.id = p.category_id
 ORDER BY
   best_seller_score DESC,
   COALESCE(p.discount_percent, 0) DESC,
   COALESCE(p.updated_at, p.created_at) DESC
 LIMIT ?;
+
 ";
 
 $stmt = $db->conn->prepare($sql);
 if (!$stmt) {
-    response(500, "Erro ao preparar SQL.", ["erro_mysql" => $db->conn->error]);
+    error_log("SQL prepare error (listar-mais-vendidos): " . $db->conn->error);
+    response(500, "Erro interno.");
 }
 
 $stmt->bind_param("i", $limit);
 
 if (!$stmt->execute()) {
-    response(500, "Erro ao executar consulta.", ["erro_mysql" => $stmt->error]);
+    error_log("SQL execute error (listar-mais-vendidos): " . $stmt->error);
+    response(500, "Erro interno.");
 }
 
 $result = $stmt->get_result();

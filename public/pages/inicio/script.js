@@ -1,9 +1,31 @@
 window.__page = {
   init() {
+    // =========================
+    // 1) CONFIG SIMPLES (você só mexe aqui)
+    // =========================
+
     const API_PRODUTOS =
       "https://vitrinedoslinks.com.br/app/api/listar-produtos.php";
-    const API_MAIS_VENDIDOS =
-      "https://vitrinedoslinks.com.br/app/api/listar-mais-vendidos.php";
+
+    // NOVAS APIS "tipo feed" (limit apenas)
+    // Para adicionar outra API no futuro:
+    // FEEDS["nome-do-type"] = { url:"...", title:"...", loader:"..." }
+    const FEEDS = {
+      "mais-vendidos": {
+        url: "https://vitrinedoslinks.com.br/app/api/listar-mais-vendidos.php",
+        title: "MAIS VENDIDOS",
+        loader: "Carregando mais vendidos...",
+      },
+      "frete-gratis": {
+        url: "https://vitrinedoslinks.com.br/app/api/listar-frete-gratis.php",
+        title: "FRETE GRÁTIS",
+        loader: "Carregando frete grátis...",
+      },
+    };
+
+    // =========================
+    // 2) HELPERS
+    // =========================
 
     function forceShowFadeIns(scope = document) {
       scope
@@ -52,19 +74,37 @@ window.__page = {
       return res.json();
     }
 
-    async function renderMaisVendidos(sectionEl) {
-      const limit = Number(sectionEl.dataset.limit || 10);
+    // =========================
+    // 3) RENDER POR TIPO (data-type)
+    // =========================
+    async function renderByType(sectionEl) {
+      const type = sectionEl.dataset.type;
+      const def = FEEDS[type];
 
-      const url = new URL(API_MAIS_VENDIDOS);
+      if (!def) {
+        sectionEl.innerHTML = `<p style="padding:10px 0; color:#ff6b6b;">
+          Tipo "${esc(type)}" não cadastrado em FEEDS.
+        </p>`;
+        return;
+      }
+
+      const limit = Number(sectionEl.dataset.limit || 5);
+
+      // permite override via HTML:
+      // <section data-type="x" data-api="https://..." ...>
+      const apiUrl = sectionEl.dataset.api || def.url;
+
+      // permite override do título via HTML:
+      // <section data-type="x" data-title="..." ...>
+      const title = sectionEl.dataset.title || def.title;
+
+      const url = new URL(apiUrl);
       url.searchParams.set("limit", String(limit));
 
-      sectionEl.innerHTML = loaderHtml("Carregando mais vendidos...");
+      sectionEl.innerHTML = loaderHtml(def.loader);
 
       const json = await fetchJson(url.toString());
-      sessionStorage.setItem(
-        `mais-vendidos:limit:${limit}`,
-        JSON.stringify(json)
-      );
+      sessionStorage.setItem(`${type}:limit:${limit}`, JSON.stringify(json));
 
       const items = Array.isArray(json.items) ? json.items : [];
       const cardsHtml = items
@@ -72,15 +112,17 @@ window.__page = {
         .join("");
 
       sectionEl.innerHTML = renderHeader({
-        title: "MAIS VENDIDOS",
+        title,
         btnHtml: "",
         cardsHtml,
       });
 
-      // garante que o que acabou de ser injetado fique visível
       forceShowFadeIns(sectionEl);
     }
 
+    // =========================
+    // 4) RENDER MAIN/SUB (data-main + data-sub)
+    // =========================
     async function renderMainSub(sectionEl) {
       const main = sectionEl.dataset.main;
       const sub = sectionEl.dataset.sub;
@@ -109,10 +151,8 @@ window.__page = {
         .map((it) => window.Components.renderCard(it))
         .join("");
 
-      // título: usa data-label se existir (ex.: Pré-treino)
       const label = sectionEl.dataset.label ? sectionEl.dataset.label : sub;
 
-      // botão "Mostrar todos" só se existir URL
       const categoryUrl =
         json?.category_url ||
         json?.filters?.category_url ||
@@ -131,26 +171,27 @@ window.__page = {
         cardsHtml,
       });
 
-      // garante visibilidade
       forceShowFadeIns(sectionEl);
     }
 
+    // =========================
+    // 5) HYDRATE HOME (automático pelo HTML)
+    // =========================
     async function hydrateHome() {
-      const maisVendidos = document.querySelectorAll(
-        'section[data-type="mais-vendidos"]'
-      );
-
+      const typeSections = document.querySelectorAll("section[data-type]");
       const mainSubs = document.querySelectorAll(
         "section[data-main][data-sub]"
       );
 
       const jobs = [];
 
-      maisVendidos.forEach((sec) => {
+      typeSections.forEach((sec) => {
         jobs.push(
-          renderMaisVendidos(sec).catch((err) => {
-            console.error("Erro mais-vendidos:", err);
-            sec.innerHTML = `<p style="padding:10px 0; color:#ff6b6b;">Erro ao carregar Mais Vendidos</p>`;
+          renderByType(sec).catch((err) => {
+            console.error("Erro data-type:", sec.dataset.type, err);
+            sec.innerHTML = `<p style="padding:10px 0; color:#ff6b6b;">Erro ao carregar ${esc(
+              sec.dataset.type
+            )}</p>`;
           })
         );
       });
@@ -164,23 +205,20 @@ window.__page = {
               sec.dataset.sub,
               err
             );
-            sec.innerHTML = `<p style="padding:10px 0; color:#ff6b6b;">Erro ao carregar ${sec.dataset.main}/${sec.dataset.sub}</p>`;
+            sec.innerHTML = `<p style="padding:10px 0; color:#ff6b6b;">Erro ao carregar ${esc(
+              sec.dataset.main
+            )}/${esc(sec.dataset.sub)}</p>`;
           })
         );
       });
 
       await Promise.all(jobs);
-
-      // garante que qualquer fade-in restante apareça (caso algum html tenha sido criado fora das sections)
       forceShowFadeIns(document);
-
       console.log("[Home] hydrate concluído");
     }
 
     hydrateHome();
   },
 
-  destroy() {
-    // Se depois você adicionar listeners específicos da Home, remova aqui.
-  },
+  destroy() {},
 };

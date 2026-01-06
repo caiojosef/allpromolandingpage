@@ -36,6 +36,7 @@ section {
   line-height: 1;
 }
 
+
 .section-title {
   font-family: "Bebas Neue", sans-serif;
   font-size: 2.8rem;
@@ -477,6 +478,7 @@ section {
 [data-bs-theme="dark"].carousel .carousel-indicators [data-bs-target] {
   background-color: white !important;
 }
+
 
 .logoglow {
   width: 8rem;
@@ -1459,6 +1461,165 @@ section {
 
 .sticky-top {
   z-index: 1;
+}
+
+/* CHIPS (compactos) */
+.subcat-bar{
+  margin: 12px 0 18px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(15, 15, 15, 0.88);
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.28);
+}
+
+.subcat-row{
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.subcat-chip{
+  appearance: none;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.04);
+  color: #e9ecef;
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-weight: 800;
+  font-size: 0.82rem;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: transform .12s ease, border-color .18s ease, background .18s ease, color .18s ease;
+}
+
+.subcat-chip:hover{ transform: translateY(-1px); border-color: rgba(255,193,7,0.45); }
+.subcat-chip.is-active{ background: rgba(255,193,7,0.14); border-color: rgba(255,193,7,0.85); color: #ffc107; }
+
+@media (max-width: 768px){
+  .subcat-row{
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+  .subcat-row::-webkit-scrollbar{ height: 5px; }
+  .subcat-row::-webkit-scrollbar-thumb{
+    background: rgba(255,255,255,0.12);
+    border-radius: 999px;
+  }
+}
+
+/* PAGINAÇÃO */
+.pager{
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 18px 0 6px;
+}
+
+.pager-btn{
+  appearance: none;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.04);
+  color: #e9ecef;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: border-color .18s ease, background .18s ease, color .18s ease, transform .12s ease;
+}
+
+.pager-btn:hover{ transform: translateY(-1px); border-color: rgba(255,193,7,0.45); }
+.pager-btn.is-active{ background: rgba(255,193,7,0.14); border-color: rgba(255,193,7,0.85); color: #ffc107; }
+.pager-btn:disabled{ opacity: .45; cursor: not-allowed; transform: none; }
+
+/* =========================
+   Category Tabs (global)
+========================= */
+.cat-tabs {
+  position: sticky;
+  top: 56px; /* ajuste se seu navbar for maior/menor */
+  z-index: 1020;
+  background: rgba(17, 17, 17, 0.9);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 193, 7, 0.18);
+  border-radius: 14px;
+  padding: 10px;
+  margin-bottom: 14px;
+}
+
+.cat-tabs__row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+.cat-tabs__row::-webkit-scrollbar { display: none; }
+
+.cat-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.86);
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: transform .08s ease, background .15s ease, border-color .15s ease;
+}
+
+.cat-tab:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.cat-tab:active { transform: translateY(1px); }
+
+.cat-tab i { font-size: 14px; opacity: 0.95; }
+
+.cat-tab.is-active {
+  background: rgba(255, 193, 7, 0.18);
+  border-color: rgba(255, 193, 7, 0.55);
+  color: #fff;
+}
+
+.cat-tab.is-primary {
+  background: rgba(255, 193, 7, 0.95);
+  border-color: rgba(255, 193, 7, 0.95);
+  color: #0f0f0f;
+  font-weight: 700;
+}
+
+.cat-tabs__sub {
+  margin-top: 10px;
+  display: none;
+}
+
+.cat-tabs__sub.is-open {
+  display: block;
+  animation: catfade .14s ease-out;
+}
+
+@keyframes catfade {
+  from { opacity: 0; transform: translateY(-2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile: reduz um pouco o “sticky top” se precisar */
+@media (max-width: 576px) {
+  .cat-tabs { top: 54px; padding: 9px; }
+  .cat-tab { font-size: 12.5px; padding: 7px 11px; }
 }
 
 

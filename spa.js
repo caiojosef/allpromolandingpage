@@ -5,24 +5,33 @@
     return;
   }
 
-  // Rotas -> public/pages/<folder>/index.html + script.js
+  // Rotas canônicas (mais "bonitas")
   const routes = {
     "/inicio": { folder: "inicio", title: "Início" },
-    "/maisvendidos": { folder: "maisvendidos", title: "Mais Vendidos" },
+    "/mais-vendidos": { folder: "maisvendidos", title: "Mais Vendidos" },
     "/suplementos": { folder: "suplementos", title: "Suplementos" },
-    // adicione novas aqui:
-    // "/contato": { folder: "contato", title: "Contato" },
-    // "/sobre": { folder: "sobre", title: "Sobre" },
+    "/frete-gratis": { folder: "fretegratis", title: "Frete Grátis" },
   };
 
   const defaultRoute = "/inicio";
 
+  // Aliases: aceita rotas antigas/sem hífen e redireciona para a canônica
+  const aliases = {
+    "/maisvendidos": "/mais-vendidos",
+    "/fretegratis": "/frete-gratis",
+  };
+
   let currentScriptEl = null;
+
+  function normalizePath(rawPath) {
+    const p = rawPath.startsWith("/") ? rawPath : `/${rawPath}`;
+    return aliases[p] || p;
+  }
 
   function getPath() {
     const h = window.location.hash || `#${defaultRoute}`;
-    const path = h.replace(/^#/, "");
-    return path.startsWith("/") ? path : `/${path}`;
+    const raw = h.replace(/^#/, "");
+    return normalizePath(raw);
   }
 
   async function fetchHtml(url) {
@@ -33,11 +42,7 @@
 
   function unloadPreviousPage() {
     if (window.__page && typeof window.__page.destroy === "function") {
-      try {
-        window.__page.destroy();
-      } catch (e) {
-        console.warn(e);
-      }
+      try { window.__page.destroy(); } catch (e) { console.warn(e); }
     }
     window.__page = null;
 
@@ -50,7 +55,7 @@
   function loadScript(url) {
     return new Promise((resolve, reject) => {
       const s = document.createElement("script");
-      s.src = url + `?v=${Date.now()}`; // evita cache no dev
+      s.src = url + `?v=${Date.now()}`;
       s.defer = true;
       s.onload = () => resolve(s);
       s.onerror = () => reject(new Error(`Falha ao carregar script: ${url}`));
@@ -60,8 +65,16 @@
 
   async function navigate() {
     const path = getPath();
-    const route = routes[path];
 
+    // se caiu num alias, já corrige a URL para a canônica
+    const currentRaw = (window.location.hash || "").replace(/^#/, "") || defaultRoute;
+    const normalized = normalizePath(currentRaw);
+    if (normalized !== currentRaw) {
+      window.location.hash = `#${normalized}`;
+      return;
+    }
+
+    const route = routes[path];
     if (!route) {
       window.location.hash = `#${defaultRoute}`;
       return;
@@ -98,6 +111,7 @@
   window.addEventListener("hashchange", navigate);
 
   document.addEventListener("DOMContentLoaded", () => {
+    // se abrir como /index.html, isso continua aparecendo, mas o hash fica bonito
     if (!window.location.hash) window.location.hash = `#${defaultRoute}`;
     navigate();
   });

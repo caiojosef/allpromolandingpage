@@ -173,9 +173,69 @@ window.__page = {
 
       // garante que qualquer fade-in restante apareça (caso algum html tenha sido criado fora das sections)
       forceShowFadeIns(document);
-
-      console.log("[Home] hydrate concluído");
     }
+    function setVisible(el, show) {
+      el.style.display = show ? "" : "none";
+    }
+
+    function getRelatedDividers(sectionEl) {
+      const related = [];
+      const prev = sectionEl.previousElementSibling;
+      const next = sectionEl.nextElementSibling;
+
+      if (
+        prev &&
+        prev.tagName === "HR" &&
+        prev.classList.contains("gc-divider")
+      ) {
+        related.push(prev);
+      }
+      if (
+        next &&
+        next.tagName === "HR" &&
+        next.classList.contains("gc-divider")
+      ) {
+        related.push(next);
+      }
+      return related;
+    }
+
+    function applyFilter(sections, sub) {
+      sections.forEach((sec) => {
+        const match = sub === "__all__" ? true : sec.dataset.sub === sub;
+        setVisible(sec, match);
+        getRelatedDividers(sec).forEach((hr) => setVisible(hr, match));
+      });
+    }
+
+    function setupSubFilter() {
+      const bar = document.querySelector(".subcat-bar");
+      const row = document.querySelector(".subcat-row");
+      if (!bar || !row) return;
+
+      const sections = Array.from(
+        document.querySelectorAll('section[data-main="suplementos"][data-sub]')
+      );
+
+      if (!sections.length) return;
+
+      // garante estado inicial: "Todos"
+      applyFilter(sections, "__all__");
+
+      row.addEventListener("click", (e) => {
+        const btn = e.target.closest(".subcat-chip");
+        if (!btn) return;
+
+        row
+          .querySelectorAll(".subcat-chip")
+          .forEach((b) => b.classList.remove("is-active"));
+        btn.classList.add("is-active");
+
+        applyFilter(sections, btn.dataset.sub);
+      });
+    }
+
+    
 
     hydrateHome();
   },
