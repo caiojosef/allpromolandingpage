@@ -10,6 +10,14 @@ section {
   scroll-margin-top: 90px; /* ajuste conforme a altura do navbar */
 }
 
+.navbar-toggler{
+  margin: auto !important;
+}
+
+.navbar-brand{
+  margin: auto !important;
+}
+
 .hero {
   background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
     url("https://images.unsplash.com/photo-1571902943202-507ec2618e8f?q=80&w=1975&auto=format&fit=crop")
@@ -138,6 +146,8 @@ section {
   .card-img-top {
     block-size: 140px;
   }
+
+  
 }
 
 .logomenu {
@@ -1450,3 +1460,5 @@ section {
 .sticky-top {
   z-index: 1;
 }
+
+

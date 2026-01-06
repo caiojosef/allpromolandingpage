@@ -43,12 +43,14 @@
 
     <nav class="navbar navbar-expand-lg bg-dark sticky-top border-bottom border-warning-subtle">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="#/inicio"><img src="/public/images/logovitrine.png" class="logomenu"
-                    alt="Logo Vitrine dos links"></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+            <a class="navbar-brand fw-bold" href="#/inicio"><img src="/public/images/logovitrine.png"
+                            class="logomenu" alt="Logo Vitrine dos links"></a>
+
+            <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
                 aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+                <a class="navbar-brand fw-bold" href="#/inicio"><img src="/public/images/logovitrine.png"
+                            class="logomenu" alt="Logo Vitrine dos links"></a>
+            </button> -->
 
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav ms-auto align-items-center">
@@ -102,26 +104,33 @@
                                     target="_blank">Camisas <i class="bi bi-amazon"></i></a></li>
                         </ul>
                     </li> -->
-
+                    
+                    
                     <li class="nav-item">
                         <a class="nav-link" href="glow.html" target="_blank"><i class="bi bi-star-fill"></i> <img
                                 src="/public/images/Logo Horizontal Branco.png" class="logoglow" alt="Logo Glow Corps"
                                 sizes="" srcset=""></a>
                     </li>
-                    <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+
+                    <!-- <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
                         <a class="btn btn-warning btn-sm fw-bold"
                             href="https://www.amazon.com.br/shop/caiojosef?ref=ac_inf_tb_vh" target="_blank"><i
                                 class="bi bi-cart-fill"></i> Ofertas Amazon</a>
                     <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
                         <a class="btn btn-warning btn-sm fw-bold" href="https://mercadolivre.com/sec/16oBFtK"
                             target="_blank"><i class="bi bi-cart-fill"></i> Ofertas Mercado Livre</a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>
     </nav>
     <menu data-name="Tela Inicial" href="#/inicio" icon-img="/public/images/icons/house-door-fill.svg"></menu>
+    <menu data-name="Mais Vendidos" href="#/maisvendidos" icon-img="/public/images/icons/Crown.svg"></menu>
     <menu data-name="Suplementos" href="#/suplementos" icon-img="/public/images/icons/capsule-pill.svg"></menu>
+    <menu data-name="Ofertas Amazon" href="https://www.amazon.com.br/shop/caiojosef?ref=ac_inf_tb_vh"
+        icon-img="/public/images/icons/cart-fill.svg"></menu>
+    <menu data-name="Ofertas Mercado Livre" href="https://mercadolivre.com/sec/16oBFtK"
+        icon-img="/public/images/icons/cart-fill.svg"></menu>
 
     <!-- <header class="hero text-center">
         <div class="container">
@@ -243,7 +252,6 @@
     </footer>
     <script src="public/components/menu/menu.js"></script>
     <script src="/public/components/card/card.js"></script>
-    <script src="/public/pages/rendersection/scripts.js"></script>
     <script src="spa.js"></script>
     <script src="/public/assets/js/scripts.js"></script>
 

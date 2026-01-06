@@ -30,11 +30,7 @@
   border-radius: 12px;
 
   color: var(--cat-text);
-  background: linear-gradient(
-    180deg,
-    rgba(20, 20, 22, 0.92),
-    rgba(14, 14, 15, 0.92)
-  );
+  background: rgba(33, 37, 41, 1);
   border: 1px solid var(--cat-border);
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(10px);
@@ -107,7 +103,7 @@ body.cat-menu-open .cat-drawer {
 }
 
 .cat-drawer__header {
-  height: 64px;
+  height: 53px;
   padding: 0 16px;
   display: flex;
   align-items: center;
@@ -145,7 +141,7 @@ body.cat-menu-open .cat-drawer {
   display: grid;
   gap: 10px;
   overflow: auto;
-  height: calc(100vh - 64px);
+  /* height: calc(100vh - 64px); */
 }
 
 .cat-item {
@@ -175,8 +171,8 @@ body.cat-menu-open .cat-drawer {
   height: 26px;
   object-fit: contain;
   border-radius: 8px;
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  /* background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.06); */
 }
 
 .cat-item__icon--fallback {
@@ -189,7 +185,7 @@ body.cat-menu-open .cat-drawer {
 
 .cat-item__text {
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--cat-text);
 }
 
@@ -205,4 +201,9 @@ body.cat-menu-open .cat-drawer {
 html.cat-menu-open,
 body.cat-menu-open {
   overflow: hidden;
+}
+
+@media (max-width: 991px) {
+  .cat-trigger__label{display: none;}
+
 }
