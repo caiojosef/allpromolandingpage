@@ -10,11 +10,11 @@ section {
   scroll-margin-top: 90px; /* ajuste conforme a altura do navbar */
 }
 
-.navbar-toggler{
+.navbar-toggler {
   margin: auto !important;
 }
 
-.navbar-brand{
+.navbar-brand {
   margin: auto !important;
 }
 
@@ -35,7 +35,6 @@ section {
   text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.5);
   line-height: 1;
 }
-
 
 .section-title {
   font-family: "Bebas Neue", sans-serif;
@@ -147,8 +146,6 @@ section {
   .card-img-top {
     block-size: 140px;
   }
-
-  
 }
 
 .logomenu {
@@ -478,7 +475,6 @@ section {
 [data-bs-theme="dark"].carousel .carousel-indicators [data-bs-target] {
   background-color: white !important;
 }
-
 
 .logoglow {
   width: 8rem;
@@ -1464,26 +1460,26 @@ section {
 }
 
 /* CHIPS (compactos) */
-.subcat-bar{
+.subcat-bar {
   margin: 12px 0 18px;
   padding: 10px 12px;
   border-radius: 14px;
   background: rgba(15, 15, 15, 0.88);
-  border: 1px solid rgba(255,255,255,0.06);
-  box-shadow: 0 10px 24px rgba(0,0,0,0.28);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
 }
 
-.subcat-row{
+.subcat-row {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
   align-items: center;
 }
 
-.subcat-chip{
+.subcat-chip {
   appearance: none;
-  border: 1px solid rgba(255,255,255,0.10);
-  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
   color: #e9ecef;
   border-radius: 999px;
   padding: 7px 12px;
@@ -1492,28 +1488,38 @@ section {
   cursor: pointer;
   user-select: none;
   white-space: nowrap;
-  transition: transform .12s ease, border-color .18s ease, background .18s ease, color .18s ease;
+  transition: transform 0.12s ease, border-color 0.18s ease,
+    background 0.18s ease, color 0.18s ease;
 }
 
-.subcat-chip:hover{ transform: translateY(-1px); border-color: rgba(255,193,7,0.45); }
-.subcat-chip.is-active{ background: rgba(255,193,7,0.14); border-color: rgba(255,193,7,0.85); color: #ffc107; }
+.subcat-chip:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 193, 7, 0.45);
+}
+.subcat-chip.is-active {
+  background: rgba(255, 193, 7, 0.14);
+  border-color: rgba(255, 193, 7, 0.85);
+  color: #ffc107;
+}
 
-@media (max-width: 768px){
-  .subcat-row{
+@media (max-width: 768px) {
+  .subcat-row {
     flex-wrap: nowrap;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     padding-bottom: 4px;
   }
-  .subcat-row::-webkit-scrollbar{ height: 5px; }
-  .subcat-row::-webkit-scrollbar-thumb{
-    background: rgba(255,255,255,0.12);
+  .subcat-row::-webkit-scrollbar {
+    height: 5px;
+  }
+  .subcat-row::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.12);
     border-radius: 999px;
   }
 }
 
 /* PAGINAÇÃO */
-.pager{
+.pager {
   display: flex;
   justify-content: center;
   gap: 8px;
@@ -1521,105 +1527,290 @@ section {
   margin: 18px 0 6px;
 }
 
-.pager-btn{
+.pager-btn {
   appearance: none;
-  border: 1px solid rgba(255,255,255,0.10);
-  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
   color: #e9ecef;
   border-radius: 10px;
   padding: 8px 10px;
   font-weight: 800;
   font-size: 0.85rem;
   cursor: pointer;
-  transition: border-color .18s ease, background .18s ease, color .18s ease, transform .12s ease;
+  transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease,
+    transform 0.12s ease;
 }
 
-.pager-btn:hover{ transform: translateY(-1px); border-color: rgba(255,193,7,0.45); }
-.pager-btn.is-active{ background: rgba(255,193,7,0.14); border-color: rgba(255,193,7,0.85); color: #ffc107; }
-.pager-btn:disabled{ opacity: .45; cursor: not-allowed; transform: none; }
+.pager-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 193, 7, 0.45);
+}
+.pager-btn.is-active {
+  background: rgba(255, 193, 7, 0.14);
+  border-color: rgba(255, 193, 7, 0.85);
+  color: #ffc107;
+}
+.pager-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
 
 /* =========================
-   Category Tabs (global)
+   Subcategorias (chips) - Suplementos
 ========================= */
-.cat-tabs {
-  position: sticky;
-  top: 56px; /* ajuste se seu navbar for maior/menor */
-  z-index: 1020;
-  background: rgba(17, 17, 17, 0.9);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 193, 7, 0.18);
-  border-radius: 14px;
-  padding: 10px;
-  margin-bottom: 14px;
+.subcat-bar {
+  margin-bottom: 12px;
 }
 
-.cat-tabs__row {
+.subcat-row {
   display: flex;
   gap: 8px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  padding-bottom: 2px;
+  padding: 2px 2px 6px;
 }
-.cat-tabs__row::-webkit-scrollbar { display: none; }
+.subcat-row::-webkit-scrollbar {
+  display: none;
+}
 
-.cat-tab {
+.subcat-chip {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.03);
-  color: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.88);
   padding: 7px 12px;
   border-radius: 999px;
   font-size: 13px;
   line-height: 1;
   white-space: nowrap;
-  text-decoration: none;
-  transition: transform .08s ease, background .15s ease, border-color .15s ease;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.08s ease, background 0.15s ease,
+    border-color 0.15s ease;
+}
+.subcat-chip:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+.subcat-chip:active {
+  transform: translateY(1px);
+}
+.subcat-chip i {
+  font-size: 14px;
+  opacity: 0.95;
 }
 
-.cat-tab:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.14);
-}
-
-.cat-tab:active { transform: translateY(1px); }
-
-.cat-tab i { font-size: 14px; opacity: 0.95; }
-
-.cat-tab.is-active {
-  background: rgba(255, 193, 7, 0.18);
-  border-color: rgba(255, 193, 7, 0.55);
-  color: #fff;
-}
-
-.cat-tab.is-primary {
+.subcat-chip.is-active {
   background: rgba(255, 193, 7, 0.95);
   border-color: rgba(255, 193, 7, 0.95);
-  color: #0f0f0f;
+  color: #111;
   font-weight: 700;
 }
+/* =========================
+   Barra Global de Abas (SPA)
+========================= */
+.route-tabs {
+  margin: 8px 0 14px;
+}
 
-.cat-tabs__sub {
-  margin-top: 10px;
+.route-tabs__row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 2px 2px 6px;
+}
+.route-tabs__row::-webkit-scrollbar {
   display: none;
 }
 
-.cat-tabs__sub.is-open {
+.route-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.88);
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.08s ease, background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.route-tab:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+.route-tab:active {
+  transform: translateY(1px);
+}
+
+.route-tab i {
+  font-size: 14px;
+  opacity: 0.95;
+}
+
+.route-tab.is-active {
+  background: rgba(255, 193, 7, 0.95);
+  border-color: rgba(255, 193, 7, 0.95);
+  color: #111;
+  font-weight: 700;
+}
+
+.route-tab__chev {
+  margin-left: 2px;
+  opacity: 0.85;
+  font-size: 13px;
+}
+
+/* Subcategorias (aparece só em /suplementos) */
+.route-tabs__sub {
+  margin-top: 8px;
+  display: none;
+}
+.route-tabs__sub.is-open {
   display: block;
-  animation: catfade .14s ease-out;
+}
+/* =========================
+   Barra global de categorias
+========================= */
+#globalCatsBar {
+  margin: 10px 0 16px;
 }
 
-@keyframes catfade {
-  from { opacity: 0; transform: translateY(-2px); }
-  to   { opacity: 1; transform: translateY(0); }
+#globalCatsBar .subcat-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 2px 2px 6px;
+}
+#globalCatsBar .subcat-row::-webkit-scrollbar { display: none; }
+
+#globalCatsBar .subcat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.04);
+  color: rgba(255,255,255,.90);
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: transform .08s ease, background .15s ease, border-color .15s ease;
 }
 
-/* Mobile: reduz um pouco o “sticky top” se precisar */
+#globalCatsBar .subcat-chip:hover {
+  background: rgba(255,255,255,.07);
+  border-color: rgba(255,255,255,.18);
+}
+
+#globalCatsBar .subcat-chip:active { transform: translateY(1px); }
+
+#globalCatsBar .subcat-chip i { font-size: 14px; opacity: .95; }
+
+#globalCatsBar .subcat-chip.is-active {
+  background: rgba(255,193,7,.95);
+  border-color: rgba(255,193,7,.95);
+  color: #111;
+  font-weight: 700;
+}
+
+/* Subcategorias: só mostram quando estiver em /suplementos */
+#globalCatsSub { display: none; margin-top: 8px; }
+#globalCatsBar.is-sub-open #globalCatsSub { display: flex; }
+
+/* =========================
+   Categorias: mobile colapsável
+========================= */
+#globalCatsToggle {
+  display: none;
+  width: 100%;
+  margin: 10px 0 10px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.04);
+  color: rgba(255,255,255,.92);
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-weight: 700;
+  text-align: left;
+}
+
+#globalCatsToggle .gc-toggle-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+#globalCatsToggle .gc-toggle-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#globalCatsToggle .gc-chevron {
+  transition: transform .15s ease;
+  opacity: .9;
+}
+
+#globalCatsBar.is-open #globalCatsToggle .gc-chevron {
+  transform: rotate(180deg);
+}
+
+/* Wrapper que contém as linhas de chips */
+#globalCatsWrap {
+  display: block;
+}
+
+/* Mobile: mostra botão e colapsa */
 @media (max-width: 576px) {
-  .cat-tabs { top: 54px; padding: 9px; }
-  .cat-tab { font-size: 12.5px; padding: 7px 11px; }
+  #globalCatsToggle {
+    display: block;
+  }
+
+  /* fechado por padrão no mobile */
+  #globalCatsBar:not(.is-open) #globalCatsWrap {
+    display: none;
+  }
+
+  /* quando abre */
+  #globalCatsBar.is-open #globalCatsWrap {
+    display: block;
+  }
 }
 
+/* Garantia extra para não “cortar” chips */
+#globalCatsBar .subcat-row {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+/* ===== Mobile: quando abrir, expandir PARA BAIXO (wrap) ===== */
+@media (max-width: 576px) {
+  /* Quando estiver aberto, as linhas viram "quebradas" */
+  #globalCatsBar.is-open .subcat-row {
+    flex-wrap: wrap !important;
+    overflow-x: hidden !important;
+    padding-bottom: 0 !important;
+  }
 
+  /* Só um respiro entre as linhas */
+  #globalCatsBar.is-open #globalCatsSub {
+    margin-top: 10px;
+  }
+}

@@ -1,77 +1,13 @@
 // public/components/category-tabs/category-tabs.js
 (() => {
-  // Config central (você edita aqui)
-  const CONFIG = {
-    main: [
-      {
-        key: "inicio",
-        label: "Início",
-        icon: "bi-house-door",
-        href: "#/inicio",
-        primary: true,
-      },
-      {
-        key: "mais",
-        label: "Mais Vendidos",
-        icon: "bi-trophy",
-        href: "#/mais-vendidos",
-      },
-      {
-        key: "frete",
-        label: "Frete Grátis",
-        icon: "bi-truck",
-        href: "#/frete-gratis",
-      },
+  "use strict";
 
-      // “Toggle” que expande subcategorias
-      {
-        key: "suplementos",
-        label: "Suplementos",
-        icon: "bi-capsule",
-        toggle: "suplementos",
-        href: "#/suplementos",
-      },
-
-      // externos (opcional)
-      {
-        key: "amazon",
-        label: "Ofertas Amazon",
-        icon: "bi-cart",
-        href: "https://www.amazon.com.br/shop/caiojosef?ref=ac_inf_tb_vh",
-        external: true,
-      },
-      {
-        key: "ml",
-        label: "Ofertas ML",
-        icon: "bi-cart-check",
-        href: "https://mercadolivre.com/sec/16oBFtK",
-        external: true,
-      },
-    ],
-
-    // subcategorias por grupo
-    sub: {
-      suplementos: [
-        { label: "Todos", icon: "bi-grid", href: "#/suplementos" },
-        {
-          label: "Whey",
-          icon: "bi-lightning-charge",
-          href: "#/suplementos?sub=whey&limit=100&label=Whey",
-        },
-        {
-          label: "Creatina",
-          icon: "bi-droplet",
-          href: "#/suplementos?sub=creatina&limit=100&label=Creatina",
-        },
-        {
-          label: "Pré-treino",
-          icon: "bi-fire",
-          href: "#/suplementos?sub=pre-treino&limit=100&label=Pré-treino",
-        },
-      ],
-    },
+  const IDS = {
+    root: "catTabs",
+    main: "catTabsMain",
   };
 
+  // ---------- Utils ----------
   function esc(s) {
     return String(s ?? "")
       .replaceAll("&", "&amp;")
@@ -93,11 +29,89 @@
       for (const [k, v] of sp.entries()) params[k] = v;
     }
 
-    return { path, params };
+    return { path, params, full: `#${raw}` };
   }
 
-  function buildMainRow() {
-    return CONFIG.main
+  function hrefToPath(href) {
+    // pega apenas o path base do href do tipo "#/rota?..."
+    if (!href || typeof href !== "string") return "";
+    if (!href.startsWith("#/")) return "";
+    const raw = href.replace(/^#/, "");
+    const [pathRaw] = raw.split("?");
+    return pathRaw.startsWith("/") ? pathRaw : `/${pathRaw}`;
+  }
+
+  // ---------- Resolver URLs (css/json) com base no src do JS ----------
+  function getThisScriptUrl() {
+    const cur = document.currentScript;
+    if (cur && cur.src) return new URL(cur.src, window.location.href);
+
+    // fallback: encontra por final do arquivo
+    const found = Array.from(document.scripts).find((s) => {
+      const src = s.src || "";
+      return (
+        src.endsWith("/public/components/category-tabs/category-tabs.js") ||
+        src.endsWith("public/components/category-tabs/category-tabs.js") ||
+        src.endsWith("/category-tabs.js")
+      );
+    });
+
+    return found?.src ? new URL(found.src, window.location.href) : null;
+  }
+
+  function getAssetUrl(fileName) {
+    const jsUrl = getThisScriptUrl();
+    if (!jsUrl) return `public/components/category-tabs/${fileName}`;
+    return new URL(fileName, jsUrl).toString(); // mesma pasta do JS
+  }
+
+  function ensureStyles() {
+    const cssUrl = getAssetUrl("category-tabs.css");
+
+    const alreadyLoaded = Array.from(
+      document.querySelectorAll('link[rel="stylesheet"]')
+    ).some((l) => {
+      try {
+        return (
+          new URL(l.href, window.location.href).toString() ===
+          new URL(cssUrl, window.location.href).toString()
+        );
+      } catch {
+        return l.href === cssUrl;
+      }
+    });
+
+    if (alreadyLoaded) return;
+
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = cssUrl;
+    link.setAttribute("data-category-tabs-css", "1");
+    document.head.appendChild(link);
+  }
+
+  async function loadConfig() {
+    const jsonUrl = getAssetUrl("category-tabs.json");
+    try {
+      const res = await fetch(jsonUrl, { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status} ao carregar config`);
+      const data = await res.json();
+
+      // validações mínimas
+      if (!data || !Array.isArray(data.main))
+        throw new Error("Config inválida: campo main ausente");
+      if (!data.sub || typeof data.sub !== "object") data.sub = {};
+
+      return data;
+    } catch (err) {
+      console.error("[category-tabs] Falha ao carregar JSON:", err);
+      return { main: [], sub: {} };
+    }
+  }
+
+  // ---------- Render ----------
+  function buildMainRow(CONFIG) {
+    return (CONFIG.main || [])
       .map((it) => {
         const cls = ["cat-tab", it.primary ? "is-primary" : ""]
           .filter(Boolean)
@@ -105,8 +119,8 @@
 
         const attrs = [
           `class="${cls}"`,
-          `href="${esc(it.href)}"`,
-          `data-key="${esc(it.key)}"`,
+          `href="${esc(it.href || "#")}"`,
+          `data-key="${esc(it.key || "")}"`,
           it.toggle ? `data-toggle="${esc(it.toggle)}"` : "",
           it.external ? `target="_blank" rel="noopener"` : "",
           it.toggle ? `aria-expanded="false"` : "",
@@ -114,81 +128,92 @@
           .filter(Boolean)
           .join(" ");
 
-        return `<a ${attrs}><i class="bi ${esc(it.icon)}"></i><span>${esc(
-          it.label
-        )}</span></a>`;
+        return `<a ${attrs}><i class="bi ${esc(
+          it.icon || "bi-dot"
+        )}"></i><span>${esc(it.label || "")}</span></a>`;
       })
       .join("");
   }
 
-  function buildSubRow(group) {
-    const items = CONFIG.sub[group] || [];
+  function buildSubRow(CONFIG, group) {
+    const items = (CONFIG.sub && CONFIG.sub[group]) || [];
     return items
       .map((it) => {
         return `
-        <a class="cat-tab" href="${esc(it.href)}" data-sub="${esc(group)}">
-          <i class="bi ${esc(it.icon || "bi-dot")}"></i>
-          <span>${esc(it.label)}</span>
-        </a>
-      `;
+          <a class="cat-tab" href="${esc(it.href || "#")}" data-sub="${esc(
+          group
+        )}">
+            <i class="bi ${esc(it.icon || "bi-dot")}"></i>
+            <span>${esc(it.label || "")}</span>
+          </a>
+        `;
       })
       .join("");
   }
 
-  function injectUI() {
+  function injectUI(CONFIG) {
     const spaView = document.getElementById("spa-view");
     if (!spaView) return;
 
     // evita duplicar
-    if (document.getElementById("catTabs")) return;
+    if (document.getElementById(IDS.root)) return;
+
+    const groups = Object.keys(CONFIG.sub || {});
+
+    const subHtml = groups
+      .map((group) => {
+        return `
+          <div class="cat-tabs__sub" data-group="${esc(group)}">
+            <div class="cat-tabs__row">
+              ${buildSubRow(CONFIG, group)}
+            </div>
+          </div>
+        `;
+      })
+      .join("");
 
     const html = `
-      <div class="cat-tabs" id="catTabs" aria-label="Categorias">
-        <div class="cat-tabs__row" id="catTabsMain">
-          ${buildMainRow()}
+      <div class="cat-tabs" id="${IDS.root}" aria-label="Categorias">
+        <div class="cat-tabs__row" id="${IDS.main}">
+          ${buildMainRow(CONFIG)}
         </div>
-
-        <div class="cat-tabs__sub" id="catTabsSub-suple" data-group="suplementos">
-          <div class="cat-tabs__row">
-            ${buildSubRow("suplementos")}
-          </div>
-        </div>
+        ${subHtml}
       </div>
     `;
 
     spaView.insertAdjacentHTML("beforebegin", html);
 
     // eventos
-    const root = document.getElementById("catTabs");
+    const root = document.getElementById(IDS.root);
     root.addEventListener("click", (e) => {
       const a = e.target.closest("a.cat-tab");
       if (!a) return;
 
       const toggle = a.getAttribute("data-toggle");
+      const href = a.getAttribute("href") || "";
+
       if (toggle) {
         e.preventDefault();
 
-        // navegar para página base do grupo (ex: /suplementos)
-        const href = a.getAttribute("href");
-        if (href && href.startsWith("#/")) window.location.hash = href;
+        // navega para rota base do grupo (se for interna)
+        if (href.startsWith("#/")) window.location.hash = href;
 
+        // comportamento de toggle manual (clique abre/fecha),
+        // mas ao mudar de aba (hashchange) o estado será corrigido pela regra.
         toggleGroup(toggle);
         return;
       }
 
-      // links internos: deixa o hashchange do router trabalhar
-      const href = a.getAttribute("href") || "";
+      // links internos: deixa o router trabalhar via hash
       if (href.startsWith("#/")) {
         e.preventDefault();
         window.location.hash = href;
       }
       // externos seguem normal
     });
-
-    // atualiza estado inicial
-    updateActiveFromRoute();
   }
 
+  // ---------- Estado / comportamento ----------
   function toggleGroup(group) {
     const sub = document.querySelector(`.cat-tabs__sub[data-group="${group}"]`);
     if (!sub) return;
@@ -209,53 +234,86 @@
       .forEach((el) => el.setAttribute("aria-expanded", "false"));
   }
 
-  function updateActiveFromRoute() {
-    const { path } = parseHash();
-
-    // ativa botão principal
+  function setActiveMainByPath(CONFIG, path) {
     document
-      .querySelectorAll("#catTabsMain .cat-tab")
+      .querySelectorAll(`#${IDS.main} .cat-tab`)
       .forEach((a) => a.classList.remove("is-active"));
 
-    // regra: quando estiver em /suplementos, marca suplementos ativo e abre sub
-    if (path === "/suplementos") {
-      const sup = document.querySelector(
-        '#catTabsMain .cat-tab[data-key="suplementos"]'
-      );
-      if (sup) sup.classList.add("is-active");
+    // tenta achar item cujo href base bate com a rota atual
+    const match = (CONFIG.main || []).find(
+      (it) => hrefToPath(it.href) === path
+    );
+    if (!match) return null;
 
-      // abre sub (sem fechar se já estiver aberto)
-      closeAllGroups();
+    const btn = document.querySelector(
+      `#${IDS.main} .cat-tab[data-key="${CSS.escape(match.key)}"]`
+    );
+    if (btn) btn.classList.add("is-active");
+
+    return match;
+  }
+
+  function setActiveSubByHash(fullHash) {
+    // marca subitem ativo por hash completo (inclui query string)
+    document
+      .querySelectorAll(`.cat-tabs__sub .cat-tab`)
+      .forEach((a) => a.classList.remove("is-active"));
+
+    const selector = `.cat-tabs__sub .cat-tab[href="${CSS.escape(fullHash)}"]`;
+    const hit = document.querySelector(selector);
+    if (hit) hit.classList.add("is-active");
+  }
+
+  function updateFromRoute(CONFIG) {
+    const root = document.getElementById(IDS.root);
+    if (!root) return;
+
+    const { path, full } = parseHash();
+
+    // ativa main conforme rota
+    const currentMain = setActiveMainByPath(CONFIG, path);
+
+    // regra principal: subcategorias fechadas quando não estiver na aba base do grupo
+    closeAllGroups();
+
+    // se a rota atual é a rota base de um item com toggle, abre o grupo correspondente
+    if (currentMain && currentMain.toggle) {
+      const group = currentMain.toggle;
+
       const sub = document.querySelector(
-        '.cat-tabs__sub[data-group="suplementos"]'
+        `.cat-tabs__sub[data-group="${CSS.escape(group)}"]`
       );
       if (sub) sub.classList.add("is-open");
+
       const toggleBtn = document.querySelector(
-        `.cat-tab[data-toggle="suplementos"]`
+        `.cat-tab[data-toggle="${CSS.escape(group)}"]`
       );
       if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "true");
-      return;
-    }
 
-    // demais rotas
-    const mapping = {
-      "/inicio": "inicio",
-      "/mais-vendidos": "mais",
-      "/frete-gratis": "frete",
-    };
-
-    const key = mapping[path];
-    if (key) {
-      const btn = document.querySelector(
-        `#catTabsMain .cat-tab[data-key="${key}"]`
-      );
-      if (btn) btn.classList.add("is-active");
-    } else {
-      // rota não mapeada: fecha grupos
-      closeAllGroups();
+      // opcional: marcar sub ativo se bater exatamente o hash
+      setActiveSubByHash(full);
     }
   }
 
-  document.addEventListener("DOMContentLoaded", injectUI);
-  window.addEventListener("hashchange", updateActiveFromRoute);
+  // ---------- Boot ----------
+  async function boot() {
+    ensureStyles();
+
+    const CONFIG = await loadConfig();
+    if (!CONFIG.main || !CONFIG.main.length) {
+      console.warn("[category-tabs] Config sem itens em main.");
+      return;
+    }
+
+    injectUI(CONFIG);
+    updateFromRoute(CONFIG);
+
+    window.addEventListener("hashchange", () => updateFromRoute(CONFIG));
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
 })();

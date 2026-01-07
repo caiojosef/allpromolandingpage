@@ -1,0 +1,68 @@
+{
+    "main": [
+        {
+            "key": "inicio",
+            "label": "Início",
+            "icon": "bi-house-door",
+            "href": "#/inicio",
+            "primary": true
+        },
+        {
+            "key": "mais",
+            "label": "Mais Vendidos",
+            "icon": "bi-trophy",
+            "href": "#/mais-vendidos"
+        },
+        {
+            "key": "frete",
+            "label": "Frete Grátis",
+            "icon": "bi-truck",
+            "href": "#/frete-gratis"
+        },
+        {
+            "key": "suplementos",
+            "label": "Suplementos",
+            "icon": "bi-capsule",
+            "href": "#/suplementos",
+            "toggle": "suplementos"
+        },
+        {
+            "key": "amazon",
+            "label": "Ofertas Amazon",
+            "icon": "bi-cart",
+            "href": "https://www.amazon.com.br/shop/caiojosef?ref=ac_inf_tb_vh",
+            "external": true
+        },
+        {
+            "key": "ml",
+            "label": "Ofertas ML",
+            "icon": "bi-cart-check",
+            "href": "https://mercadolivre.com/sec/16oBFtK",
+            "external": true
+        }
+    ],
+    "sub": {
+        "suplementos": [
+            {
+                "label": "Todos",
+                "icon": "bi-grid",
+                "href": "#/suplementos"
+            },
+            {
+                "label": "Whey",
+                "icon": "bi-lightning-charge",
+                "href": "#/suplementos?sub=whey&limit=100&label=Whey"
+            },
+            {
+                "label": "Creatina",
+                "icon": "bi-droplet",
+                "href": "#/suplementos?sub=creatina&limit=100&label=Creatina"
+            },
+            {
+                "label": "Pré-treino",
+                "icon": "bi-fire",
+                "href": "#/suplementos?sub=pre-treino&limit=100&label=Pré-treino"
+            }
+        ]
+    }
+}

@@ -125,7 +125,7 @@
         }" type="button" aria-haspopup="dialog" aria-controls="${
       IDS.drawer
     }" aria-expanded="false">
-          <span class="cat-trigger__label">Categorias</span>
+          
           <span class="cat-hamburger" aria-hidden="true">
             <i></i><i></i><i></i>
           </span>
