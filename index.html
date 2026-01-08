@@ -17,6 +17,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;700&display=swap"
         rel="stylesheet">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8625122685851764"
+        crossorigin="anonymous"></script>
+
 
     <meta name="facebook-domain-verification" content="8fjq9b3efvuzplerh1jzuvk1p6xo2x" />
     <script>
@@ -133,6 +136,41 @@
     <menu data-name="Ofertas Mercado Livre" href="https://mercadolivre.com/sec/16oBFtK"
         icon-img="/public/images/icons/cart-fill.svg"></menu>
 
+    <section class="sponsor-hero sponsor-hero--boxed" aria-label="Patrocinadores">
+        <div class="sponsor-hero__wrap">
+            <div id="sponsorCarousel" class="carousel slide sponsor-carousel" data-bs-ride="carousel"
+                data-bs-interval="4500" data-bs-touch="true" data-bs-pause="hover">
+                <div class="carousel-inner" id="sponsorCarouselInner"></div>
+
+                <button class="carousel-control-prev sponsor-control" type="button" data-bs-target="#sponsorCarousel"
+                    data-bs-slide="prev" aria-label="Slide anterior">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                </button>
+
+                <button class="carousel-control-next sponsor-control" type="button" data-bs-target="#sponsorCarousel"
+                    data-bs-slide="next" aria-label="Próximo slide">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                </button>
+            </div>
+
+            <!-- Template do slide -->
+            <template id="tplSponsorSlide">
+                <div class="carousel-item">
+                    <a class="sponsor-link" href="#" aria-label="">
+                        <span class="sponsor-badge">Patrocínio</span>
+
+                        <picture class="sponsor-media">
+                            <source class="sponsor-src-mobile" media="(max-width: 576px)" srcset="">
+                            <img class="sponsor-img" src="" alt="" loading="lazy" decoding="async">
+                        </picture>
+                    </a>
+                </div>
+            </template>
+        </div>
+    </section>
+
+
+
     <!-- <header class="hero text-center">
         <div class="container">
              <h1><img src="/public/public/images/logo-beco1.png" class="logohero" alt="Logo Beco do gamer"></h1>
@@ -140,13 +178,14 @@
                 fitness.</p>
         </div>
     </header> -->
-    <section class="hero-textual hero-fixed" aria-label="Destaque e Anunciantes">
+    <!-- <section class="hero-textual hero-fixed" aria-label="Destaque e Anunciantes">
         <div class="container">
             <div id="heroRotator" class="carousel slide hero-carousel" data-bs-ride="false" data-bs-touch="true">
 
                 <div class="carousel-inner" id="heroRotatorInner">
 
-                    <!-- SLIDE 0: HERO PADRÃO (TEXTO) -->
+                    
+                     SLIDE 0: HERO PADRÃO (TEXTO)
                     <div class="carousel-item active" data-hero="true">
                         <div class="hero-frame">
                             <div class="hero-content">
@@ -165,10 +204,10 @@
                         </div>
                     </div>
 
-                    <!-- SLIDES DE ANUNCIANTES (injetados via scripts.js) -->
+                    SLIDES DE ANUNCIANTES (injetados via scripts.js) 
                 </div>
 
-                <!-- CONTROLES -->
+                 CONTROLES 
                 <button class="carousel-control-prev hero-control" type="button" data-bs-target="#heroRotator"
                     data-bs-slide="prev" aria-label="Anterior">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -179,11 +218,11 @@
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 </button>
 
-                <!-- INDICADORES -->
+                 INDICADORES
                 <div class="carousel-indicators hero-indicators" id="heroRotatorIndicators"></div>
             </div>
         </div>
-    </section>
+    </section> -->
 
 
     <!-- <section class="ads-carousel py-4">
@@ -225,7 +264,11 @@
         <!-- CATEGORIAS (UI) -->
 
         <!-- AQUI VAI ENTRAR O CONTEÚDO DO SPA DEPOIS -->
-        
+        <!-- BARRA GLOBAL DE CATEGORIAS (não fica dentro do spa-view) -->
+        <section id="category-bar" class="catbar" aria-label="Categorias"></section>
+
+
+
         <section id="spa-view">
 
         </section>
@@ -243,6 +286,9 @@
         </div>
     </footer>
     
+
+    
+
     <script src="public/components/menu/menu.js"></script>
     <script src="/public/components/card/card.js"></script>
     <script type="module" src="public/spa/app.js"></script>

@@ -1,0 +1,16 @@
+{
+  "name": "Vitrine dos Links",
+  "short_name": "Vitrine",
+  "description": "Ofertas selecionadas, links verificados e promoções reais.",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#1a1a1a",
+  "theme_color": "#ffc107",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/public/images/icon192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/public/images/icon512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/public/images/icon512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

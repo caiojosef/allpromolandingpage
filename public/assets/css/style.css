@@ -17,6 +17,131 @@ section {
 .navbar-brand {
   margin: auto !important;
 }
+/* =========================
+   HERO CARROSSEL (Patrocínio)
+   ========================= */
+
+.sponsor-hero {
+  padding: 0.75rem 0 0.75rem;
+}
+
+/* “Boxed”: laterais pequenas e hero centralizado */
+.sponsor-hero--boxed .sponsor-hero__wrap {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 0 12px; /* pequeno nas laterais */
+}
+
+@media (min-width: 992px) {
+  .sponsor-hero--boxed .sponsor-hero__wrap {
+    padding: 0 16px;
+  }
+}
+
+/* Carrossel: altura controlada e visual premium */
+.sponsor-carousel {
+  --h: clamp(160px, 22vw, 260px); /* mantém sua altura automática */
+
+  height: var(--h);
+  border-radius: 18px;
+  overflow: hidden;
+
+  background: #0f0f0f;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.sponsor-carousel .carousel-inner,
+.sponsor-carousel .carousel-item,
+.sponsor-carousel .sponsor-link {
+  height: 100%;
+}
+
+.sponsor-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  outline: none;
+}
+
+.sponsor-link:focus-visible {
+  outline: 2px solid rgba(255, 193, 7, 0.75);
+  outline-offset: 4px;
+  border-radius: 18px;
+}
+
+.sponsor-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.sponsor-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+
+  object-fit: cover;
+  object-position: center;
+
+  transform: scale(1);
+  transition: transform 0.25s ease, filter 0.25s ease;
+  filter: saturate(1.02) contrast(1.02);
+}
+
+.sponsor-link:hover .sponsor-img {
+  transform: scale(1.02);
+  filter: saturate(1.06) contrast(1.05);
+}
+
+/* Badge Patrocínio */
+.sponsor-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 193, 7, 0.35);
+  color: #ffc107;
+
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+
+  backdrop-filter: blur(6px);
+}
+
+/* Controles */
+.sponsor-control {
+  width: 12%;
+  opacity: 0.85;
+  transition: opacity 0.15s ease;
+}
+
+.sponsor-carousel:hover .sponsor-control {
+  opacity: 1;
+}
+
+.sponsor-carousel .carousel-control-prev-icon,
+.sponsor-carousel .carousel-control-next-icon {
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.75));
+}
+
+/* Mobile: mantém altura confortável */
+@media (max-width: 576px) {
+  .sponsor-carousel {
+    --h: 190px;
+  }
+}
 
 .hero {
   background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
@@ -1696,15 +1821,17 @@ section {
   scrollbar-width: none;
   padding: 2px 2px 6px;
 }
-#globalCatsBar .subcat-row::-webkit-scrollbar { display: none; }
+#globalCatsBar .subcat-row::-webkit-scrollbar {
+  display: none;
+}
 
 #globalCatsBar .subcat-chip {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.04);
-  color: rgba(255,255,255,.90);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.9);
   padding: 7px 12px;
   border-radius: 999px;
   font-size: 13px;
@@ -1712,28 +1839,39 @@ section {
   white-space: nowrap;
   cursor: pointer;
   user-select: none;
-  transition: transform .08s ease, background .15s ease, border-color .15s ease;
+  transition: transform 0.08s ease, background 0.15s ease,
+    border-color 0.15s ease;
 }
 
 #globalCatsBar .subcat-chip:hover {
-  background: rgba(255,255,255,.07);
-  border-color: rgba(255,255,255,.18);
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
-#globalCatsBar .subcat-chip:active { transform: translateY(1px); }
+#globalCatsBar .subcat-chip:active {
+  transform: translateY(1px);
+}
 
-#globalCatsBar .subcat-chip i { font-size: 14px; opacity: .95; }
+#globalCatsBar .subcat-chip i {
+  font-size: 14px;
+  opacity: 0.95;
+}
 
 #globalCatsBar .subcat-chip.is-active {
-  background: rgba(255,193,7,.95);
-  border-color: rgba(255,193,7,.95);
+  background: rgba(255, 193, 7, 0.95);
+  border-color: rgba(255, 193, 7, 0.95);
   color: #111;
   font-weight: 700;
 }
 
 /* Subcategorias: só mostram quando estiver em /suplementos */
-#globalCatsSub { display: none; margin-top: 8px; }
-#globalCatsBar.is-sub-open #globalCatsSub { display: flex; }
+#globalCatsSub {
+  display: none;
+  margin-top: 8px;
+}
+#globalCatsBar.is-sub-open #globalCatsSub {
+  display: flex;
+}
 
 /* =========================
    Categorias: mobile colapsável
@@ -1742,9 +1880,9 @@ section {
   display: none;
   width: 100%;
   margin: 10px 0 10px;
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.04);
-  color: rgba(255,255,255,.92);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.92);
   padding: 10px 12px;
   border-radius: 12px;
   font-weight: 700;
@@ -1765,8 +1903,8 @@ section {
 }
 
 #globalCatsToggle .gc-chevron {
-  transition: transform .15s ease;
-  opacity: .9;
+  transition: transform 0.15s ease;
+  opacity: 0.9;
 }
 
 #globalCatsBar.is-open #globalCatsToggle .gc-chevron {
@@ -1814,3 +1952,4 @@ section {
     margin-top: 10px;
   }
 }
+

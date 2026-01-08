@@ -5,23 +5,23 @@ header("Content-Type: application/json; charset=utf-8");
 // CORS (RESTRITO) — ajuste se precisar
 // ===============================
 $allowedOrigins = [
-    "https://vitrinedoslinks.com.br",
-    "https://www.vitrinedoslinks.com.br",
-    "http://127.0.0.1:5501"
+  "https://vitrinedoslinks.com.br",
+  "https://www.vitrinedoslinks.com.br",
+  "http://127.0.0.1:5501"
 ];
 
 $origin = $_SERVER["HTTP_ORIGIN"] ?? "";
 if ($origin && in_array($origin, $allowedOrigins, true)) {
-    header("Access-Control-Allow-Origin: " . $origin);
-    header("Vary: Origin");
+  header("Access-Control-Allow-Origin: " . $origin);
+  header("Vary: Origin");
 }
 
 header("Access-Control-Allow-Methods: GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
-    http_response_code(204);
-    exit;
+  http_response_code(204);
+  exit;
 }
 
 // Se quiser proteger esse GET também, descomente:
@@ -32,12 +32,12 @@ require_once __DIR__ . "/../config/Database.php";
 
 function response(int $status, string $msg, array $extra = []): void
 {
-    http_response_code($status);
-    echo json_encode(array_merge([
-        "ok" => $status >= 200 && $status < 300,
-        "message" => $msg
-    ], $extra), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    exit;
+  http_response_code($status);
+  echo json_encode(array_merge([
+    "ok" => $status >= 200 && $status < 300,
+    "message" => $msg
+  ], $extra), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  exit;
 }
 
 // ===============================
@@ -50,16 +50,16 @@ $limit = (int) ($_GET["limit"] ?? 5);
 
 // Segurança days
 if ($days < 1)
-    $days = 1;
+  $days = 1;
 if ($days > 30)
-    $days = 30;
+  $days = 30;
 
 // Segurança limit
 $MAX_LIMIT = 100;
 if ($limit < 1)
-    $limit = 1;
+  $limit = 1;
 if ($limit > $MAX_LIMIT)
-    $limit = $MAX_LIMIT;
+  $limit = $MAX_LIMIT;
 
 // Mantém a regra do seu UNION: cada subquery busca até $limit, e no final retorna $limit.
 $innerLimit = $limit;
@@ -68,10 +68,10 @@ $innerLimit = $limit;
 header("Cache-Control: public, max-age=60");
 
 try {
-    $db = new Database();
+  $db = new Database();
 } catch (Exception $e) {
-    error_log("DB connect error (listar-produtos): " . $e->getMessage());
-    response(500, "Erro interno.");
+  error_log("DB connect error (listar-produtos): " . $e->getMessage());
+  response(500, "Erro interno.");
 }
 
 // ===============================
@@ -95,26 +95,26 @@ LIMIT 1;
 
 $stmtCheck = $db->conn->prepare($sqlCheck);
 if (!$stmtCheck) {
-    error_log("SQL prepare error (listar-produtos:check): " . $db->conn->error);
-    response(500, "Erro interno.");
+  error_log("SQL prepare error (listar-produtos:check): " . $db->conn->error);
+  response(500, "Erro interno.");
 }
 
 $stmtCheck->bind_param("ss", $main, $sub);
 
 if (!$stmtCheck->execute()) {
-    error_log("SQL execute error (listar-produtos:check): " . $stmtCheck->error);
-    response(500, "Erro interno.");
+  error_log("SQL execute error (listar-produtos:check): " . $stmtCheck->error);
+  response(500, "Erro interno.");
 }
 
 $resCheck = $stmtCheck->get_result();
 if ($resCheck->num_rows === 0) {
-    $stmtCheck->close();
-    response(422, "Categoria não existe (main/sub inválidos).", [
-        "filters" => [
-            "main" => $main,
-            "sub" => $sub
-        ]
-    ]);
+  $stmtCheck->close();
+  response(422, "Categoria não existe (main/sub inválidos).", [
+    "filters" => [
+      "main" => $main,
+      "sub" => $sub
+    ]
+  ]);
 }
 
 $catInfo = $resCheck->fetch_assoc();
@@ -160,6 +160,7 @@ FROM (
     JOIN categories main ON main.id = sub.parent_id
     WHERE LOWER(main.slug) = ?
       AND LOWER(sub.slug)  = ?
+      AND p.active = 1
       AND p.created_at >= DATE_SUB(NOW(), INTERVAL ? DAY)
     ORDER BY
       COALESCE(p.rating_avg, 0) DESC,
@@ -203,6 +204,7 @@ FROM (
     JOIN categories main ON main.id = sub.parent_id
     WHERE LOWER(main.slug) = ?
       AND LOWER(sub.slug)  = ?
+      AND p.active = 1
       AND p.created_at < DATE_SUB(NOW(), INTERVAL ? DAY)
     ORDER BY
       COALESCE(p.rating_avg, 0) DESC,
@@ -217,10 +219,11 @@ ORDER BY
 LIMIT ?;
 ";
 
+
 $stmt = $db->conn->prepare($sql);
 if (!$stmt) {
-    error_log("SQL prepare error (listar-produtos): " . $db->conn->error);
-    response(500, "Erro interno.");
+  error_log("SQL prepare error (listar-produtos): " . $db->conn->error);
+  response(500, "Erro interno.");
 }
 
 /**
@@ -230,45 +233,45 @@ if (!$stmt) {
  *  i     (limit)
  */
 $stmt->bind_param(
-    "ssii" . "ssii" . "i",
-    $main,
-    $sub,
-    $days,
-    $innerLimit,
-    $main,
-    $sub,
-    $days,
-    $innerLimit,
-    $limit
+  "ssii" . "ssii" . "i",
+  $main,
+  $sub,
+  $days,
+  $innerLimit,
+  $main,
+  $sub,
+  $days,
+  $innerLimit,
+  $limit
 );
 
 if (!$stmt->execute()) {
-    error_log("SQL execute error (listar-produtos): " . $stmt->error);
-    response(500, "Erro interno.");
+  error_log("SQL execute error (listar-produtos): " . $stmt->error);
+  response(500, "Erro interno.");
 }
 
 $result = $stmt->get_result();
 $items = [];
 while ($row = $result->fetch_assoc()) {
-    $items[] = $row;
+  $items[] = $row;
 }
 $stmt->close();
 
 // Resposta inclui category_url também em filters (facilita seu botão "Mostrar todos")
 response(200, "Produtos listados com sucesso.", [
-    "filters" => [
-        "main" => $main,
-        "sub" => $sub,
-        "days" => $days,
-        "limit" => $limit,
-        "max_limit" => $MAX_LIMIT,
-        "category_slug" => $catInfo["category_slug"],
-        "category_name" => $catInfo["category_name"],
-        "category_url" => $catInfo["category_url"],
-        "main_slug" => $catInfo["main_slug"],
-        "main_name" => $catInfo["main_name"],
-        "main_url" => $catInfo["main_url"],
-    ],
-    "count" => count($items),
-    "items" => $items
+  "filters" => [
+    "main" => $main,
+    "sub" => $sub,
+    "days" => $days,
+    "limit" => $limit,
+    "max_limit" => $MAX_LIMIT,
+    "category_slug" => $catInfo["category_slug"],
+    "category_name" => $catInfo["category_name"],
+    "category_url" => $catInfo["category_url"],
+    "main_slug" => $catInfo["main_slug"],
+    "main_name" => $catInfo["main_name"],
+    "main_url" => $catInfo["main_url"],
+  ],
+  "count" => count($items),
+  "items" => $items
 ]);

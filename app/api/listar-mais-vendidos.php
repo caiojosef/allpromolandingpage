@@ -86,13 +86,14 @@ SELECT
   p.badge_oficial,
   (COALESCE(p.rating_avg, 0) * LOG10(1 + COALESCE(p.rating_count, 0))) AS best_seller_score
 FROM products p
+WHERE p.active = 1
 ORDER BY
   best_seller_score DESC,
   COALESCE(p.discount_percent, 0) DESC,
   COALESCE(p.updated_at, p.created_at) DESC
 LIMIT ?;
-
 ";
+
 
 $stmt = $db->conn->prepare($sql);
 if (!$stmt) {

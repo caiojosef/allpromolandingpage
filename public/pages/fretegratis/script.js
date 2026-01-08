@@ -1,12 +1,9 @@
 // public/pages/fretegratis/script.js
 window.__page = (() => {
-  let abortCtrl = null;
+  const FEED_URL =
+    "https://vitrinedoslinks.com.br/app/api/listar-frete-gratis.php";
 
-  function forceShowFadeIns(scope = document) {
-    scope
-      .querySelectorAll(".fade-in")
-      .forEach((el) => el.classList.add("visible"));
-  }
+  let version = 0;
 
   function esc(s) {
     return String(s ?? "")
@@ -15,6 +12,12 @@ window.__page = (() => {
       .replaceAll(">", "&gt;")
       .replaceAll('"', "&quot;")
       .replaceAll("'", "&#039;");
+  }
+
+  function forceShowFadeIns(scope = document) {
+    scope
+      .querySelectorAll(".fade-in")
+      .forEach((el) => el.classList.add("visible"));
   }
 
   function loaderHtml(texto) {
@@ -34,19 +37,17 @@ window.__page = (() => {
         ${esc(title)}
         ${btnHtml || ""}
       </h2>
-      <div class="product-grid mt-3">
-        ${cardsHtml}
-      </div>
+      <div class="product-grid mt-3">${cardsHtml}</div>
     `;
   }
 
-  async function fetchJson(url, signal) {
-    const res = await fetch(url, { cache: "no-store", signal });
+  async function fetchJson(url) {
+    const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) throw new Error(`Falha ao buscar ${url} (${res.status})`);
     return res.json();
   }
 
-  async function renderFreteGratis(sectionEl) {
+  async function renderFreteGratis(sectionEl, v = 0) {
     if (
       !window.Components ||
       typeof window.Components.renderCard !== "function"
@@ -59,37 +60,24 @@ window.__page = (() => {
       return;
     }
 
-    // API do feed
-    const FEED_URL =
-      "https://vitrinedoslinks.com.br/app/api/listar-frete-gratis.php";
     const limit = Number(sectionEl.dataset.limit || 50);
 
     const url = new URL(FEED_URL);
     url.searchParams.set("limit", String(limit));
 
-    // loader
+    // Sempre mostra loader e SEMPRE busca
     sectionEl.innerHTML = loaderHtml("Carregando frete grátis...");
 
-    // abort anterior (se existir)
-    if (abortCtrl) abortCtrl.abort();
-    abortCtrl = new AbortController();
+    const json = await fetchJson(url.toString());
 
-    const json = await fetchJson(url.toString(), abortCtrl.signal);
-
-    // cache simples (opcional)
-    try {
-      sessionStorage.setItem(
-        `frete-gratis:limit:${limit}`,
-        JSON.stringify(json)
-      );
-    } catch (_) {}
+    // Se o usuário trocou de rota enquanto carregava, ignora este resultado
+    if (v !== version) return;
 
     const items = Array.isArray(json.items) ? json.items : [];
     const cardsHtml = items
       .map((it) => window.Components.renderCard(it))
       .join("");
 
-    // botão "Mostrar todos" (se a API retornar algum link)
     const allUrl =
       json?.category_url ||
       json?.filters?.category_url ||
@@ -105,13 +93,16 @@ window.__page = (() => {
 
     sectionEl.innerHTML = renderSection({
       title: "FRETE GRÁTIS",
+      btnHtml,
       cardsHtml,
     });
 
     forceShowFadeIns(sectionEl);
   }
 
-  async function hydratePage() {
+  async function applyState() {
+    const v = ++version;
+
     const sec = document.querySelector('section[data-type="frete-gratis"]');
     if (!sec) {
       console.warn(
@@ -120,33 +111,30 @@ window.__page = (() => {
       return;
     }
 
-    try {
-      await renderFreteGratis(sec);
-      forceShowFadeIns(document);
-      console.log("[Frete Grátis] carregado");
-    } catch (err) {
-      if (err?.name === "AbortError") return;
+    await renderFreteGratis(sec, v).catch((err) => {
+      if (v !== version) return;
       console.error("[Frete Grátis] erro:", err);
       sec.innerHTML = `
         <p style="padding:10px 0; color:#ff6b6b;">
           Erro ao carregar frete grátis.
         </p>
       `;
-    }
+    });
+
+    if (v !== version) return;
+    forceShowFadeIns(document);
+    console.log("[Frete Grátis] carregado");
   }
 
   return {
     init() {
-      hydratePage();
+      applyState();
+    },
+    onRouteChange() {
+      applyState();
     },
     destroy() {
-      // cancela requisição pendente ao trocar de rota
-      if (abortCtrl) {
-        try {
-          abortCtrl.abort();
-        } catch (_) {}
-        abortCtrl = null;
-      }
+      version++; // invalida respostas em voo
     },
   };
 })();

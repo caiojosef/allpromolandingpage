@@ -92,22 +92,7 @@ window.__page = (() => {
     return res.json();
   }
 
-  function tryCacheGet(key) {
-    try {
-      const raw = sessionStorage.getItem(key);
-      return raw ? JSON.parse(raw) : null;
-    } catch (_) {
-      return null;
-    }
-  }
-
-  function tryCacheSet(key, json) {
-    try {
-      sessionStorage.setItem(key, JSON.stringify(json));
-    } catch (_) {}
-  }
-
-  async function renderMainSubFixed(sectionEl, limitOverride = null, v = 0) {
+  async function renderMainSub(sectionEl, limitOverride = null, v = 0) {
     const main = sectionEl.dataset.main;
     const sub = sectionEl.dataset.sub;
 
@@ -120,16 +105,14 @@ window.__page = (() => {
     url.searchParams.set("days", String(days));
     url.searchParams.set("limit", String(limit));
 
-    const cacheKey = `products:${main}:${sub}:${days}:${limit}`;
-    const cached = tryCacheGet(cacheKey);
-
+    // Sempre mostra loader e SEMPRE busca
     sectionEl.innerHTML = loaderHtml(
       "Buscando as melhores ofertas para você..."
     );
 
-    const json = cached || (await fetchJson(url.toString()));
-    if (!cached) tryCacheSet(cacheKey, json);
+    const json = await fetchJson(url.toString());
 
+    // Se o usuário clicou em outra sub enquanto carregava, ignora este resultado
     if (v !== version) return;
 
     const items = Array.isArray(json.items) ? json.items : [];
@@ -175,7 +158,7 @@ window.__page = (() => {
 
       await Promise.all(
         sections.map((sec) =>
-          renderMainSubFixed(sec, null, v).catch((err) => {
+          renderMainSub(sec, null, v).catch((err) => {
             if (v !== version) return;
             console.error("Erro seção:", sec.dataset.sub, err);
             sec.innerHTML = `<p style="padding:10px 0; color:#ff6b6b;">Erro ao carregar ${esc(
@@ -190,12 +173,13 @@ window.__page = (() => {
       return;
     }
 
+    // sub específica: mostra só a section escolhida e faz fetch com limit override (ex: 100)
     applyFilter(sections, sub);
 
     const sec = sections.find((s) => sameSub(s.dataset.sub, sub));
     if (!sec) return;
 
-    await renderMainSubFixed(sec, limit || 100, v).catch((err) => {
+    await renderMainSub(sec, limit || 100, v).catch((err) => {
       if (v !== version) return;
       console.error("Erro seção:", sub, err);
       sec.innerHTML = `<p style="padding:10px 0; color:#ff6b6b;">Erro ao carregar ${esc(

@@ -61,10 +61,6 @@ window.__page = {
       sectionEl.innerHTML = loaderHtml("Carregando mais vendidos...");
 
       const json = await fetchJson(url.toString());
-      sessionStorage.setItem(
-        `mais-vendidos:limit:${limit}`,
-        JSON.stringify(json)
-      );
 
       const items = Array.isArray(json.items) ? json.items : [];
       const cardsHtml = items
@@ -77,7 +73,6 @@ window.__page = {
         cardsHtml,
       });
 
-      // garante que o que acabou de ser injetado fique visível
       forceShowFadeIns(sectionEl);
     }
 
@@ -99,20 +94,14 @@ window.__page = {
       );
 
       const json = await fetchJson(url.toString());
-      sessionStorage.setItem(
-        `products:${main}:${sub}:${days}:${limit}`,
-        JSON.stringify(json)
-      );
 
       const items = Array.isArray(json.items) ? json.items : [];
       const cardsHtml = items
         .map((it) => window.Components.renderCard(it))
         .join("");
 
-      // título: usa data-label se existir (ex.: Pré-treino)
       const label = sectionEl.dataset.label ? sectionEl.dataset.label : sub;
 
-      // botão "Mostrar todos" só se existir URL
       const categoryUrl =
         json?.category_url ||
         json?.filters?.category_url ||
@@ -131,7 +120,6 @@ window.__page = {
         cardsHtml,
       });
 
-      // garante visibilidade
       forceShowFadeIns(sectionEl);
     }
 
@@ -164,20 +152,21 @@ window.__page = {
               sec.dataset.sub,
               err
             );
-            sec.innerHTML = `<p style="padding:10px 0; color:#ff6b6b;">Erro ao carregar ${sec.dataset.main}/${sec.dataset.sub}</p>`;
+            sec.innerHTML = `<p style="padding:10px 0; color:#ff6b6b;">Erro ao carregar ${esc(
+              sec.dataset.main
+            )}/${esc(sec.dataset.sub)}</p>`;
           })
         );
       });
 
       await Promise.all(jobs);
 
-      // garante que qualquer fade-in restante apareça (caso algum html tenha sido criado fora das sections)
       forceShowFadeIns(document);
-
-      console.log("[Home] hydrate concluído");
     }
 
-    hydrateHome();
+    hydrateHome().catch((err) => {
+      console.error("[Home] erro no hydrate:", err);
+    });
   },
 
   destroy() {

@@ -43,12 +43,14 @@ function response(int $status, string $msg, array $extra = []): void
 // ===============================
 // Params
 // ===============================
-$limit = isset($_GET["limit"]) ? (int)$_GET["limit"] : 5;
+$limit = isset($_GET["limit"]) ? (int) $_GET["limit"] : 5;
 
 // Segurança limit
 $MAX_LIMIT = 50; // você pode subir, mas recomendo manter 50
-if ($limit < 1)  $limit = 1;
-if ($limit > $MAX_LIMIT) $limit = $MAX_LIMIT;
+if ($limit < 1)
+    $limit = 1;
+if ($limit > $MAX_LIMIT)
+    $limit = $MAX_LIMIT;
 
 // Pool interno (top N antes do random). Mantém coerência com seu SQL original.
 $POOL_SIZE = 50;
@@ -108,7 +110,8 @@ FROM (
       ) AS score
     FROM products p
     JOIN categories c ON c.id = p.category_id
-    WHERE p.shipping_free = 1
+    WHERE p.active = 1
+      AND p.shipping_free = 1
       AND COALESCE(p.rating_avg, 0) >= 4.5
       AND COALESCE(p.rating_count, 0) >= 100
   ) ranked
