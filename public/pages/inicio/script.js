@@ -7,7 +7,9 @@ window.__page = {
     const API_PRODUTOS =
       "https://vitrinedoslinks.com.br/app/api/listar-produtos.php";
 
-    // APIS "tipo feed" (limit apenas)
+    // NOVAS APIS "tipo feed" (limit apenas)
+    // Para adicionar outra API no futuro:
+    // FEEDS["nome-do-type"] = { url:"...", title:"...", loader:"..." }
     const FEEDS = {
       "mais-vendidos": {
         url: "https://vitrinedoslinks.com.br/app/api/listar-mais-vendidos.php",
@@ -69,7 +71,6 @@ window.__page = {
 
     async function fetchJson(url) {
       const res = await fetch(url, { cache: "no-store" });
-      // mantém comportamento simples; se quiser, posso colocar validação res.ok igual no outro arquivo
       return res.json();
     }
 
@@ -89,11 +90,11 @@ window.__page = {
 
       const limit = Number(sectionEl.dataset.limit || 5);
 
-      // override via HTML:
+      // permite override via HTML:
       // <section data-type="x" data-api="https://..." ...>
       const apiUrl = sectionEl.dataset.api || def.url;
 
-      // override de título via HTML:
+      // permite override do título via HTML:
       // <section data-type="x" data-title="..." ...>
       const title = sectionEl.dataset.title || def.title;
 
@@ -103,6 +104,7 @@ window.__page = {
       sectionEl.innerHTML = loaderHtml(def.loader);
 
       const json = await fetchJson(url.toString());
+      sessionStorage.setItem(`${type}:limit:${limit}`, JSON.stringify(json));
 
       const items = Array.isArray(json.items) ? json.items : [];
       const cardsHtml = items
@@ -139,6 +141,10 @@ window.__page = {
       );
 
       const json = await fetchJson(url.toString());
+      sessionStorage.setItem(
+        `products:${main}:${sub}:${days}:${limit}`,
+        JSON.stringify(json)
+      );
 
       const items = Array.isArray(json.items) ? json.items : [];
       const cardsHtml = items
@@ -208,11 +214,10 @@ window.__page = {
 
       await Promise.all(jobs);
       forceShowFadeIns(document);
+      console.log("[Home] hydrate concluído");
     }
 
-    hydrateHome().catch((err) => {
-      console.error("[Home] erro no hydrate:", err);
-    });
+    hydrateHome();
   },
 
   destroy() {},

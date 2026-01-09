@@ -192,12 +192,6 @@
     mainRow.addEventListener("click", (e) => {
       const btn = e.target.closest(".subcat-chip");
       if (!btn) return;
-
-      barEl.classList.remove("is-open");
-      document
-        .getElementById("globalCatsToggle")
-        ?.setAttribute("aria-expanded", "false");
-
       const path = btn.dataset.path;
       if (!path) return;
       window.location.hash = `#${path}`;

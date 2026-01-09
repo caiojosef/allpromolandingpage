@@ -135,6 +135,7 @@ FROM (
       p.source_image_url,
       p.local_image_path,
       p.shipping_label,
+      p.shipping_free,
       p.rating_avg,
       p.rating_count,
       p.price_original,
@@ -146,6 +147,7 @@ FROM (
       p.badge_top_seller,
       p.badge_mercado_lider,
       p.badge_oficial,
+      p.badge_em_alta,
 
       sub.slug AS category_slug,
       sub.name AS category_name,
@@ -153,14 +155,17 @@ FROM (
       main.slug AS main_slug,
       main.name AS main_name,
       main.url  AS main_url,
+      root.slug AS root_slug,
+      root.name AS root_name,
+      root.url  AS root_url,
 
       0 AS prioridade
     FROM products p
     JOIN categories sub  ON sub.id = p.category_id
     JOIN categories main ON main.id = sub.parent_id
-    WHERE LOWER(main.slug) = ?
-      AND LOWER(sub.slug)  = ?
-      AND p.active = 1
+    JOIN categories root ON root.id = main.parent_id
+    WHERE p.active = 1
+      AND p.category_id = ?
       AND p.created_at >= DATE_SUB(NOW(), INTERVAL ? DAY)
     ORDER BY
       COALESCE(p.rating_avg, 0) DESC,
@@ -179,6 +184,7 @@ FROM (
       p.source_image_url,
       p.local_image_path,
       p.shipping_label,
+      p.shipping_free,
       p.rating_avg,
       p.rating_count,
       p.price_original,
@@ -190,6 +196,7 @@ FROM (
       p.badge_top_seller,
       p.badge_mercado_lider,
       p.badge_oficial,
+      p.badge_em_alta,
 
       sub.slug AS category_slug,
       sub.name AS category_name,
@@ -197,14 +204,17 @@ FROM (
       main.slug AS main_slug,
       main.name AS main_name,
       main.url  AS main_url,
+      root.slug AS root_slug,
+      root.name AS root_name,
+      root.url  AS root_url,
 
       1 AS prioridade
     FROM products p
     JOIN categories sub  ON sub.id = p.category_id
     JOIN categories main ON main.id = sub.parent_id
-    WHERE LOWER(main.slug) = ?
-      AND LOWER(sub.slug)  = ?
-      AND p.active = 1
+    JOIN categories root ON root.id = main.parent_id
+    WHERE p.active = 1
+      AND p.category_id = ?
       AND p.created_at < DATE_SUB(NOW(), INTERVAL ? DAY)
     ORDER BY
       COALESCE(p.rating_avg, 0) DESC,
@@ -213,9 +223,7 @@ FROM (
     LIMIT ?
   )
 ) t
-ORDER BY
-  t.prioridade ASC,
-  RAND()
+ORDER BY t.prioridade ASC, RAND()
 LIMIT ?;
 ";
 
