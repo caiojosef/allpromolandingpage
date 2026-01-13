@@ -24,7 +24,7 @@ export const ROUTES = {
         main: "suplementos",
         days: 5,
         limit: 5,
-        label: "SUPLEMENTOS",
+        label: "TOP SUPLEMENTOS",
         link: "#/suplementos",
         buttonText: "Ver todos",
       },
@@ -80,8 +80,7 @@ export const ROUTES = {
         days: 5,
         limit: 100,
         label: "SUPLEMENTOS",
-        link: "#/suplementos",
-        buttonText: "Ver todos",
+        
       }
     ],
   },

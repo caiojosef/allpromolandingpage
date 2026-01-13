@@ -6,6 +6,20 @@ import { renderSectionsRoute } from "./renderers.js";
 const viewEl = document.getElementById("spa-view");
 if (!viewEl) throw new Error("Não encontrei #spa-view no HTML.");
 
+function scrollToSpaTop(viewEl, { smooth = true, extraOffset = 8 } = {}) {
+  if (!viewEl) return;
+
+  const nav = document.querySelector(".navbar.sticky-top");
+  const navH = nav ? nav.offsetHeight : 0;
+
+  const y =
+    viewEl.getBoundingClientRect().top + window.scrollY - navH - extraOffset;
+
+  window.scrollTo({
+    top: Math.max(0, y),
+    behavior: smooth ? "smooth" : "auto",
+  });
+}
 
 // Pequeno adaptador: Router "acha" a rota, e ao navegar chama render+rehydrate
 class DynamicRouter extends Router {
@@ -53,6 +67,17 @@ class DynamicRouter extends Router {
             await window.Components.Section.rehydrate(this.viewEl);
           }
         }
+      }
+      // ✅ Render dinâmico (sem arquivo HTML)
+      if (route.layout === "sections") {
+        renderSectionsRoute(this.viewEl, route, this.routes, path);
+
+        if (window.Components?.Section?.rehydrate) {
+          await window.Components.Section.rehydrate(this.viewEl);
+        }
+
+        // ✅ sobe para o topo do conteúdo novo
+        scrollToSpaTop(this.viewEl, { smooth: true });
       }
 
       this._current.path = path;

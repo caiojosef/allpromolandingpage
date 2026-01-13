@@ -2425,3 +2425,7 @@ body.cat-menu-open {
 .cat-chevron:hover i {
   color: var(--cat-accent);
 }
+
+#spa-view {
+  scroll-margin-top: 90px; /* ajuste fino caso o navbar “coma” o topo */
+}
