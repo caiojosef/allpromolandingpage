@@ -2136,9 +2136,10 @@ section {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  z-index: 10;
-  width: 44px;
+
   height: 44px;
+  padding: 0 14px;     /* ✅ espaço pro texto */
+  width: auto;         /* ✅ não fixa mais 44px */
 
   border-radius: 12px;
   background: rgba(33, 37, 41, 1);
@@ -2149,6 +2150,8 @@ section {
   cursor: pointer;
   user-select: none;
 }
+
+
 .cat-trigger:hover {
   border-color: rgba(247, 181, 0, 0.35);
   box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55);
@@ -2428,4 +2431,19 @@ body.cat-menu-open {
 
 #spa-view {
   scroll-margin-top: 90px; /* ajuste fino caso o navbar “coma” o topo */
+}
+
+
+.cat-trigger__label {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--cat-text);
+  line-height: 1;
+  white-space: nowrap;
+}
+@media (max-width: 360px) {
+  .cat-trigger__label { display: none; }
+  .cat-trigger { padding: 0; width: 44px; }
 }

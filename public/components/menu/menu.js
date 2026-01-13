@@ -16,6 +16,7 @@
   };
 
   const ICON_BASE = "public/images/icons/";
+  const DEFAULT_EXPAND_ALL = true; // ✅ abre por padrão (a seta minimiza)
 
   /**
    * Mapeia slug da ROOT -> arquivo do ícone.
@@ -167,32 +168,30 @@
     `;
   }
 
+  function setChevronIcon(nodeEl, expanded) {
+    const icon = nodeEl.querySelector(":scope > .cat-row .cat-chevron i");
+    if (!icon) return;
+
+    icon.classList.remove("bi-arrow-right-circle", "bi-arrow-down-circle");
+    icon.classList.add(
+      expanded ? "bi-arrow-down-circle" : "bi-arrow-right-circle"
+    );
+  }
+
+  // com animação (clique do usuário)
   function setExpanded(nodeEl, expanded) {
     nodeEl.setAttribute("aria-expanded", expanded ? "true" : "false");
     setChevronIcon(nodeEl, expanded);
-
-    function setChevronIcon(nodeEl, expanded) {
-      const icon = nodeEl.querySelector(":scope > .cat-row .cat-chevron i");
-      if (!icon) return;
-
-      // remove ambos por segurança
-      icon.classList.remove("bi-arrow-right-circle", "bi-arrow-down-circle");
-      icon.classList.add(
-        expanded ? "bi-arrow-down-circle" : "bi-arrow-right-circle"
-      );
-    }
 
     const childrenEl = nodeEl.querySelector(":scope > .cat-children");
     if (!childrenEl) return;
 
     childrenEl.setAttribute("aria-hidden", expanded ? "false" : "true");
 
-    // Animação por height
     if (expanded) {
-      // medir o scrollHeight e aplicar
       const h = childrenEl.scrollHeight;
       childrenEl.style.height = h + "px";
-      // após a transição, deixar auto para responder conteúdo (opcional)
+
       const onEnd = (e) => {
         if (e.propertyName === "height") {
           childrenEl.style.height = "auto";
@@ -201,13 +200,23 @@
       };
       childrenEl.addEventListener("transitionend", onEnd);
     } else {
-      // se estava auto, setar altura atual antes de fechar
       const current = childrenEl.scrollHeight;
       childrenEl.style.height = current + "px";
-      // força reflow
-      void childrenEl.offsetHeight;
+      void childrenEl.offsetHeight; // reflow
       childrenEl.style.height = "0px";
     }
+  }
+
+  // sem animação (estado inicial/padrão)
+  function setExpandedInstant(nodeEl, expanded) {
+    nodeEl.setAttribute("aria-expanded", expanded ? "true" : "false");
+    setChevronIcon(nodeEl, expanded);
+
+    const childrenEl = nodeEl.querySelector(":scope > .cat-children");
+    if (!childrenEl) return;
+
+    childrenEl.setAttribute("aria-hidden", expanded ? "false" : "true");
+    childrenEl.style.height = expanded ? "auto" : "0px";
   }
 
   function closeAllDescendants(nodeEl) {
@@ -222,6 +231,7 @@
         <button class="cat-trigger" id="${IDS.trigger}" type="button"
           aria-haspopup="dialog" aria-controls="${IDS.drawer}" aria-expanded="false">
           <span class="cat-hamburger" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="cat-trigger__label">Categorias</span>
         </button>
 
         <div class="cat-overlay" id="${IDS.overlay}" hidden></div>
@@ -246,23 +256,15 @@
     if (!list) return;
 
     const nodes = list.querySelectorAll(".cat-node");
+
     nodes.forEach((node) => {
-      // fecha semanticamente
-      node.setAttribute("aria-expanded", "false");
+      const hasKids = node.getAttribute("data-has-children") === "1";
 
-      // ajusta ícone do chevron para estado fechado (se existir)
-      const icon = node.querySelector(":scope > .cat-row .cat-chevron i");
-      if (icon) {
-        icon.classList.remove("bi-arrow-down-circle");
-        icon.classList.add("bi-arrow-right-circle");
-      }
+      // ✅ aberto por padrão se tem filhos
+      const expanded = DEFAULT_EXPAND_ALL && hasKids;
 
-      // fecha visualmente (height 0)
-      const children = node.querySelector(":scope > .cat-children");
-      if (children) {
-        children.setAttribute("aria-hidden", "true");
-        children.style.height = "0px";
-      }
+      // estado “instantâneo” (sem animação ao abrir o menu)
+      setExpandedInstant(node, expanded);
     });
   }
 

@@ -23,8 +23,40 @@ function scrollToSpaTop(viewEl, { smooth = true, extraOffset = 8 } = {}) {
 
 // Pequeno adaptador: Router "acha" a rota, e ao navegar chama render+rehydrate
 class DynamicRouter extends Router {
+  constructor(opts) {
+    super(opts);
+    this._scrollNext = false; // ✅ só liga quando houver clique
+  }
+
+  // ✅ marca scroll quando o usuário clica em link interno
+  _onClick(e) {
+    // pega links internos: data-link OU href="#/..."
+    const a = e.target.closest('a[data-link], a[href^="#/"]');
+    if (!a) return;
+
+    const href = a.getAttribute("href") || "";
+    const isInternal = href.startsWith("#/");
+
+    if (isInternal) {
+      this._scrollNext = true; // ✅ só em clique
+    }
+
+    // mantém o comportamento do Router base (intercepta data-link)
+    return super._onClick(e);
+  }
+
   async navigate(rawPath, opts = {}) {
+    const { replaceHashIfCanonical = false } = opts;
     const path = this._normalizePath(rawPath);
+
+    if (replaceHashIfCanonical) {
+      const currentRaw = this._getPathFromHash();
+      const canonical = this._normalizePath(currentRaw);
+      if (canonical !== currentRaw) {
+        window.location.hash = `#${canonical}`;
+        return;
+      }
+    }
 
     const route = this.routes[path];
     if (!route) {
@@ -46,48 +78,48 @@ class DynamicRouter extends Router {
     try {
       document.title = `${route.title} | ${this.appTitle}`;
 
-      // CSS opcional por rota
       if (Array.isArray(route.css) && route.css.length) {
         this._current.styles = await this._loadStyles(route.css);
       }
 
-      // ✅ Render dinâmico (sem arquivo HTML)
       if (route.layout === "sections") {
         renderSectionsRoute(this.viewEl, route, this.routes, path);
 
         if (window.Components?.Section?.rehydrate) {
           await window.Components.Section.rehydrate(this.viewEl);
         }
+
+        // ✅ só sobe se veio de clique
+        if (this._scrollNext) {
+          scrollToSpaTop(this.viewEl, { smooth: true });
+          this._scrollNext = false;
+        }
       } else {
-        // fallback: se você quiser ainda suportar html/module como antes
         if (route.html) {
           const html = await this._loadHtml(route.html, abort.signal);
           this.viewEl.innerHTML = html;
+
           if (window.Components?.Section?.rehydrate) {
             await window.Components.Section.rehydrate(this.viewEl);
           }
-        }
-      }
-      // ✅ Render dinâmico (sem arquivo HTML)
-      if (route.layout === "sections") {
-        renderSectionsRoute(this.viewEl, route, this.routes, path);
 
-        if (window.Components?.Section?.rehydrate) {
-          await window.Components.Section.rehydrate(this.viewEl);
+          if (this._scrollNext) {
+            scrollToSpaTop(this.viewEl, { smooth: true });
+            this._scrollNext = false;
+          }
         }
-
-        // ✅ sobe para o topo do conteúdo novo
-        scrollToSpaTop(this.viewEl, { smooth: true });
       }
 
       this._current.path = path;
-      this._current.module = null; // sem módulos por rota nesse modelo (por enquanto)
+      this._current.module = null;
     } catch (err) {
       if (err?.name === "AbortError") return;
       console.error("Router error:", err);
       this._renderError();
     } finally {
       if (this._current.abort === abort) this._current.abort = null;
+      // garantia: se der erro no meio, não deixar flag presa
+      this._scrollNext = false;
     }
   }
 }
