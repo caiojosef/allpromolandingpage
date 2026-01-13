@@ -40,13 +40,10 @@ function response(int $status, string $msg, array $extra = []): void
 header("Cache-Control: public, max-age=300");
 
 // ===============================
-// Params (opcional)
+// Param opcional: slug da Home
 // ===============================
-// Por padrão, usamos slug 'inicio' como tela inicial.
-// Você pode trocar via ?home_slug=inicio
 $homeSlug = strtolower(trim($_GET["home_slug"] ?? "inicio"));
-if ($homeSlug === "")
-    $homeSlug = "inicio";
+if ($homeSlug === "") $homeSlug = "inicio";
 
 try {
     $db = new Database();
@@ -56,7 +53,7 @@ try {
 }
 
 // =====================================================
-// SELECT: "Início" (sem produto) + categorias com produto
+// SELECT: Home (sempre) + categorias COM produto
 // =====================================================
 $sql = "
 (
@@ -126,7 +123,6 @@ if (!$stmt) {
     response(500, "Erro interno.");
 }
 
-// bind dos 2 placeholders (homeSlug duas vezes)
 $stmt->bind_param("ss", $homeSlug, $homeSlug);
 
 if (!$stmt->execute()) {
@@ -138,7 +134,6 @@ $res = $stmt->get_result();
 
 // =====================================================
 // Monta árvore roots -> mains -> subs
-// (sem maps no JSON final)
 // =====================================================
 $rootsMap = []; // root_slug => root obj
 
@@ -157,7 +152,7 @@ while ($row = $res->fetch_assoc()) {
         ];
     }
 
-    // Início vem com main/sub NULL, então não entra aqui
+    // Home vem sem main/sub
     if ($mslug !== "") {
         if (!isset($rootsMap[$rslug]["mains"][$mslug])) {
             $rootsMap[$rslug]["mains"][$mslug] = [
@@ -170,7 +165,6 @@ while ($row = $res->fetch_assoc()) {
         }
 
         if ($sslug !== "") {
-            // subs com produto (já vem filtrado no SELECT)
             $rootsMap[$rslug]["mains"][$mslug]["subs"][$sslug] = [
                 "id" => (int) $row["sub_id"],
                 "slug" => $row["sub_slug"],
@@ -181,6 +175,7 @@ while ($row = $res->fetch_assoc()) {
         }
     }
 }
+
 $stmt->close();
 
 // normaliza para arrays

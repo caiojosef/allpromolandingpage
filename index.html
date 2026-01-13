@@ -127,14 +127,15 @@
             </div>
         </div>
     </nav>
-    <menu data-name="Tela Inicial" href="#/inicio" icon-img="/public/images/icons/house-door-fill.svg"></menu>
+    <div data-menu-mount></div>
+    <!-- <menu data-name="Tela Inicial" href="#/inicio" icon-img="/public/images/icons/house-door-fill.svg"></menu>
     <menu data-name="Mais Vendidos" href="#/mais-vendidos" icon-img="/public/images/icons/Crown.svg"></menu>
     <menu data-name="Frete Gratis" href="#/frete-gratis" icon-img="/public/images/icons/free-travel.svg"></menu>
     <menu data-name="Suplementos" href="#/suplementos" icon-img="/public/images/icons/capsule-pill.svg"></menu>
     <menu data-name="Ofertas Amazon" href="https://www.amazon.com.br/shop/caiojosef?ref=ac_inf_tb_vh"
         icon-img="/public/images/icons/cart-fill.svg"></menu>
     <menu data-name="Ofertas Mercado Livre" href="https://mercadolivre.com/sec/16oBFtK"
-        icon-img="/public/images/icons/cart-fill.svg"></menu>
+        icon-img="/public/images/icons/cart-fill.svg"></menu> -->
 
     <section class="sponsor-hero sponsor-hero--boxed" aria-label="Patrocinadores">
         <div class="sponsor-hero__wrap">
@@ -260,18 +261,27 @@
 
     <main class="container my-4">
 
-
-        <!-- CATEGORIAS (UI) -->
-
-        <!-- AQUI VAI ENTRAR O CONTEÚDO DO SPA DEPOIS -->
-        <!-- BARRA GLOBAL DE CATEGORIAS (não fica dentro do spa-view) -->
-        <section id="category-bar" class="catbar" aria-label="Categorias"></section>
+        
+  <section id="spa-view"></section>
 
 
 
-        <section id="spa-view">
+        <!-- HOME: Mais Vendidos -->
+        <!-- Exemplo: Mais vendidos -->
+        <!-- <section data-root="academia" data-main="suplementos" data-sub="whey" data-limit="10" data-days="5"
+            data-label="MAIS VENDIDOS" data-link=""></section> -->
+        <!-- <section data-api="https://vitrinedoslinks.com.br/app/api/listar-mais-vendidos.php" data-limit="50"
+            data-label="MAIS VENDIDOS" data-link="/maisvendidos.html"></section>
+        <section data-api="https://vitrinedoslinks.com.br/app/api/listar-mais-vendidos.php" data-limit="5"
+            data-label="MAIS VENDIDOS" data-link="#/maisvendidos"></section> -->
 
-        </section>
+
+        <!-- Exemplo: Frete grátis -->
+        <!-- <section data-root="academia" data-main="suplementos" data-sub="creatina" data-limit="10" data-days="5"
+            data-label="FRETE GRÁTIS"></section> -->
+
+
+
 
     </main>
 
@@ -285,19 +295,18 @@
             </div>
         </div>
     </footer>
-    
-
-    
-
-    <script src="public/components/menu/menu.js"></script>
-    <script src="/public/components/card/card.js"></script>
-    <script type="module" src="public/spa/app.js"></script>
-    <script src="/public/assets/js/scripts.js"></script>
 
 
+    <script type="module" src="/public/spa/app.js"></script>
+    <script src="/public/components/menu/menu.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+    <script src="/public/components/card/card.js"></script>
+    <script src="/public/components/section/section.js"></script>
+    <script src="/public/assets/js/scripts.js"></script>
+
+
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {

@@ -103,8 +103,7 @@ section {
   position: absolute;
   top: 12px;
   left: 12px;
-  z-index: 2;
-
+  z-index: 1;
   background: rgba(0, 0, 0, 0.55);
   border: 1px solid rgba(255, 193, 7, 0.35);
   color: #ffc107;
@@ -1581,7 +1580,7 @@ section {
 }
 
 .sticky-top {
-  z-index: 1;
+  z-index: 4;
 }
 
 /* CHIPS (compactos) */
@@ -1953,5 +1952,476 @@ section {
   }
 }
 
+/* Header da rota (título da página) */
+.vd-route-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 10px 0 14px;
+  padding: 6px 2px;
+}
+
+.vd-route-meta {
+  min-width: 0;
+}
+
+.vd-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.vd-bc-muted {
+  opacity: 0.75;
+}
+
+.vd-bc-sep {
+  opacity: 0.5;
+}
+
+.vd-bc-current {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+}
+
+.vd-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 193, 7, 0.35);
+  color: rgba(255, 193, 7, 0.95);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.vd-route-title {
+  margin: 6px 0 0;
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  line-height: 1.15;
+}
+
+.vd-route-actions {
+  flex: 0 0 auto;
+  padding-top: 2px;
+}
+
+.vd-route-btn {
+  border-radius: 999px;
+  padding: 6px 12px;
+}
+
+/* Wrapper “pai” das sections: deixa claro que são filhas */
+.vd-group {
+  display: grid;
+  grid-template-columns: 6px 1fr;
+  border-radius: 14px;
+  padding: 14px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.vd-group__content {
+  min-width: 0;
+}
+
+/* Responsivo: mantém botão no topo e não quebra */
+@media (max-width: 576px) {
+  .vd-route-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .vd-route-actions {
+    width: 100%;
+  }
+  .vd-route-btn {
+    width: fit-content;
+  }
+}
+
+.vd-route-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 10px 0 14px;
+  padding: 6px 2px;
+}
+
+.vd-route-head--compact .vd-route-title {
+  display: none; /* segurança caso exista */
+}
+
+.vd-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.vd-bc-sep {
+  opacity: 0.5;
+}
+.vd-bc-link {
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+}
+.vd-bc-link:hover {
+  color: rgba(255, 255, 255, 0.95);
+  text-decoration: underline;
+}
+.vd-bc-current {
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 700;
+}
+
+.vd-route-title {
+  margin: 6px 0 0;
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  line-height: 1.15;
+}
+
+.vd-route-btn {
+  border-radius: 999px;
+  padding: 6px 12px;
+}
+
+@media (max-width: 576px) {
+  .vd-route-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
 
 
+/* public/components/menu/menu.css */
+:root {
+  --cat-bg: #0e0e0f;
+  --cat-bg-2: #141416;
+  --cat-border: rgba(255, 255, 255, 0.08);
+  --cat-text: rgba(255, 255, 255, 0.92);
+  --cat-muted: rgba(255, 255, 255, 0.65);
+  --cat-accent: #f7b500;
+  --cat-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+
+  --cat-item-bg: rgba(255, 255, 255, 0.03);
+  --cat-item-bg-hover: rgba(255, 255, 255, 0.05);
+  --cat-radius: 14px;
+}
+
+/* Root do componente */
+.cat-root {
+  position: relative;
+  z-index: 1000;
+}
+
+/* Trigger (hamburger) */
+.cat-trigger {
+  position: fixed;
+  top: 5px;
+  left: 18px;
+  z-index: 1003;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  z-index: 10;
+  width: 44px;
+  height: 44px;
+
+  border-radius: 12px;
+  background: rgba(33, 37, 41, 1);
+  border: 1px solid var(--cat-border);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(10px);
+
+  cursor: pointer;
+  user-select: none;
+}
+.cat-trigger:hover {
+  border-color: rgba(247, 181, 0, 0.35);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55);
+}
+
+.cat-hamburger {
+  width: 18px;
+  height: 14px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.cat-hamburger i {
+  display: block;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--cat-accent);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+/* Overlay */
+.cat-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  z-index: 1001;
+}
+
+/* Drawer */
+.cat-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 340px;
+  max-width: calc(100vw - 40px);
+
+  background: linear-gradient(180deg, var(--cat-bg-2), var(--cat-bg));
+  border-right: 1px solid var(--cat-border);
+  box-shadow: var(--cat-shadow);
+
+  transform: translateX(-105%);
+  
+
+  z-index: 1002;
+  outline: none;
+}
+
+/* Abrir */
+html.cat-menu-open .cat-drawer,
+body.cat-menu-open .cat-drawer {
+  transform: translateX(0);
+}
+
+/* Header do drawer */
+.cat-drawer__header {
+  height: 56px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--cat-border);
+}
+.cat-drawer__title {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: var(--cat-text);
+}
+.cat-close {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid var(--cat-border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--cat-text);
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+}
+.cat-close:hover {
+  border-color: rgba(247, 181, 0, 0.35);
+}
+
+/* Conteúdo */
+.cat-nav {
+  padding: 12px;
+  overflow: auto;
+  height: calc(100vh - 56px);
+}
+
+/* Bloco de item (root/main/sub) */
+.cat-node {
+  border-radius: var(--cat-radius);
+  border: 1px solid var(--cat-border);
+  background: var(--cat-item-bg);
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+/* Linha clicável (label + chevron) */
+.cat-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 10px;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+.cat-node:hover > .cat-row {
+  background: var(--cat-item-bg-hover);
+}
+
+/* Link (nome) */
+.cat-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+
+  text-decoration: none;
+  color: var(--cat-text);
+}
+.cat-link:focus {
+  outline: none;
+}
+.cat-text {
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Ícone só em root */
+/* Ícone só em root (agora é IMG) */
+.cat-icon {
+  width: 26px;
+  height: 26px;
+  /* border-radius: 8px; */
+  flex: 0 0 auto;
+  /* background: rgba(255, 255, 255, 0.04); */
+  /* border: 1px solid rgba(255, 255, 255, 0.1); */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.cat-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Fallback (quando não há ícone definido) */
+.cat-icon--fallback {
+  background: rgba(247, 181, 0, 0.14);
+  border: 1px solid rgba(247, 181, 0, 0.25);
+}
+
+/* Chevron (botão separado do link) */
+.cat-chevron {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  /* border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04); */
+  color: var(--cat-text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+.cat-chevron:hover {
+  border-color: rgba(247, 181, 0, 0.3);
+}
+
+.cat-chevron svg {
+  width: 16px;
+  height: 16px;
+  fill: rgba(255, 255, 255, 0.7);
+  transition: transform 180ms ease;
+}
+
+/* Expansão */
+.cat-children {
+  height: 0;
+  overflow: hidden;
+  transition: height 220ms ease;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Indent para níveis */
+.cat-children .cat-node {
+  margin: 10px;
+}
+.cat-node[data-level="1"] .cat-row {
+  padding-left: 14px;
+}
+.cat-node[data-level="2"] .cat-row {
+  padding-left: 18px;
+}
+
+/* Rotação da setinha quando aberto */
+.cat-node[aria-expanded="true"] > .cat-row .cat-chevron svg {
+  transform: rotate(180deg);
+}
+
+/* Estado sem filhos: some chevron e remove borda superior */
+.cat-node[data-has-children="0"] .cat-chevron {
+  display: none;
+}
+.cat-node[data-has-children="0"] .cat-children {
+  display: none;
+}
+
+/* Vazio / loading / erro */
+.cat-empty {
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  color: var(--cat-muted);
+  font-size: 13px;
+  margin: 8px 0;
+}
+
+/* Travar scroll quando aberto */
+html.cat-menu-open,
+body.cat-menu-open {
+  overflow: hidden;
+}
+/* Chevron: só o ícone (sem borda, sem fundo) */
+.cat-chevron {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* remove o "quadrado" no hover */
+.cat-chevron:hover {
+  background: transparent;
+}
+
+/* remove borda/outline do foco */
+.cat-chevron:focus,
+.cat-chevron:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* ícone */
+.cat-chevron i {
+  font-size: 18px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* opcional: hover só mudando a cor do ícone */
+.cat-chevron:hover i {
+  color: var(--cat-accent);
+}

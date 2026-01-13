@@ -109,6 +109,9 @@ export class Router {
       // HTML
       const html = await this._loadHtml(route.html, abort.signal);
       this.viewEl.innerHTML = html;
+      if (window.Components?.Section?.rehydrate) {
+        await window.Components.Section.rehydrate(this.viewEl);
+      }
 
       // Módulo JS da página (opcional)
       let mod = null;
